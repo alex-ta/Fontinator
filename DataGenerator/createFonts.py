@@ -6,7 +6,7 @@
 
 from pathlib import Path
 from PIL import Image, ImageFont, ImageDraw
-from libs.WordDict import *
+from DataGenerator.libs.WordDict import *
 
 # Pfad zur Eingabedatei, aus der Zufallssätze erzeugt werden
 input_file_path = "inputText.txt"
@@ -17,6 +17,11 @@ image_count = 3
 # Pfad zum Order der alle erzeugten images enthält
 img_dir: Path = Path("images")
 
+# Create directory for created images, if not existing
+if not img_dir.exists():
+    img_dir.mkdir()
+
+# Loading data from file into dict for sentence generation
 word_dict = WordDict.load_from_textfile(input_file_path)
 
 # Iterate for all available fonts
