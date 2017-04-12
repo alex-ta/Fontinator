@@ -1,0 +1,6 @@
+
+# User specific PyCharm settings
+*.idea/workspace.xml
+
+# byte code for python interpreter 
+*.pyc
