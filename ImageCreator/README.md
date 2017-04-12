@@ -1,4 +1,4 @@
-#Image Creator
+# Image Creator
 
 To use the creator call the createImg.py script.
 You have to enter information over prompt to trigger the creation process. 
