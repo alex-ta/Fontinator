@@ -1,28 +1,32 @@
 ########################################################################
 ###     Skript liest Fonts ein und erzeugt Trainings- und Testbilder ###
-###     Eingabefonts        -> Order 'fonts'
-###     Erzeute Bilderdaten -> Ordner 'images'
+###     Configuration erfolgt in "config.py"                         ###
 ########################################################################
 
 from pathlib import Path
 from PIL import Image, ImageFont, ImageDraw
 from DataGenerator.libs.WordDict import *
+import DataGenerator.config as cfg
 
-# Pfad zur Eingabedatei, aus der Zufallssätze erzeugt werden
-input_file_path = "inputText.txt"
-# Pfad zum Order der alle fonts enthält
-fonts_dir: Path = Path("fonts")
-# Zu erzeugende images pro font
-image_count = 3
-# Pfad zum Order der alle erzeugten images enthält
-img_dir: Path = Path("images")
+fonts_dir: Path = Path(cfg.FONT_INPUT_PATH)
+img_dir: Path = Path(cfg.IMG_OUTPUT_PATH)
+
+# Validation of config data
+if not fonts_dir.exists():
+    raise Exception("Path '{}' does not exists".format(fonts_dir))
+
+if not Path(cfg.TEXT_INPUT_FILE_PATH).exists():
+    raise Exception("Path '{}' does not exists".format(cfg.TEXT_INPUT_FILE_PATH))
+
+if cfg.IMAGE_COUNT < 1:
+    raise Exception("IMAGE_COUNT must be 1 oder greater")
 
 # Create directory for created images, if not existing
 if not img_dir.exists():
     img_dir.mkdir()
 
 # Loading data from file into dict for sentence generation
-word_dict = WordDict.load_from_textfile(input_file_path)
+word_dict = WordDict.load_from_textfile(cfg.TEXT_INPUT_FILE_PATH)
 
 # Iterate for all available fonts
 for font_file in fonts_dir.iterdir():
@@ -39,15 +43,17 @@ for font_file in fonts_dir.iterdir():
             img_file.unlink()
 
     # Create multiple images for each font
-    for i in range(image_count):
+    for i in range(cfg.IMAGE_COUNT):
+        font_size = 25
+        padding_top_bottom = 3
         # Create raw image
-        image = Image.new("RGBA", (1200, 30), (255, 255, 255))
+        image = Image.new("RGBA", (1200, font_size + 2 * padding_top_bottom), (255, 255, 255))
         draw = ImageDraw.Draw(image)
 
         # Draw random sentence to image
-        font = ImageFont.truetype(str(font_file), 25)
+        font = ImageFont.truetype(str(font_file), font_size)
         text = word_dict.get_sentence(10)
-        draw.text((10, 0), text, (0, 0, 0), font=font)
+        draw.text((10, 3), text, (0, 0, 0), font=font)
 
         # Save file in folder for used font
         file_name = "{}_{}.png".format(font_file.stem, i)
