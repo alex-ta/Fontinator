@@ -4,6 +4,8 @@
 ########################################################################
 
 from pathlib import Path
+
+import shutil
 from PIL import Image, ImageFont, ImageDraw
 from DataGenerator.libs.WordDict import *
 import DataGenerator.config as cfg
@@ -21,8 +23,12 @@ if not Path(cfg.TEXT_INPUT_FILE_PATH).exists():
 if cfg.IMAGE_COUNT < 1:
     raise Exception("IMAGE_COUNT must be 1 oder greater")
 
-# Create directory for created images, if not existing
-if not img_dir.exists():
+# Remove old created images
+if img_dir.exists():
+    for font_img_dir in img_dir.iterdir():
+        shutil.rmtree(str(font_img_dir))
+else:
+    # Create img dir
     img_dir.mkdir()
 
 # Loading data from file into dict for sentence generation
@@ -30,6 +36,7 @@ word_dict = WordDict.load_from_textfile(cfg.TEXT_INPUT_FILE_PATH)
 
 # Iterate for all available fonts
 for font_file in fonts_dir.iterdir():
+    print("Creating images for font '{}'".format(font_file.stem))
 
     # Create path to directory for images with this font
     img_font_dir: Path = img_dir.joinpath(Path(font_file.stem))
@@ -37,22 +44,17 @@ for font_file in fonts_dir.iterdir():
     # Create dir for font images.
     if not img_font_dir.exists():
         img_font_dir.mkdir()
-    # If folder exists remove all img_files
-    else:
-        for img_file in img_font_dir.iterdir():
-            img_file.unlink()
 
+    img_height = cfg.FONT_SIZE + 2 * cfg.PADDING_TOP_BOTTOM
+    font = ImageFont.truetype(str(font_file), cfg.FONT_SIZE)
     # Create multiple images for each font
     for i in range(cfg.IMAGE_COUNT):
-        font_size = 25
-        padding_top_bottom = 3
         # Create raw image
-        image = Image.new("RGBA", (1200, font_size + 2 * padding_top_bottom), (255, 255, 255))
+        image = Image.new("RGBA", (cfg.IMG_WIDTH, img_height), (255, 255, 255))
         draw = ImageDraw.Draw(image)
 
         # Draw random sentence to image
-        font = ImageFont.truetype(str(font_file), font_size)
-        text = word_dict.get_sentence(10)
+        text = word_dict.get_sentence(cfg.WORD_COUNT)
         draw.text((10, 3), text, (0, 0, 0), font=font)
 
         # Save file in folder for used font
