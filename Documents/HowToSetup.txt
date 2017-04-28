@@ -1,7 +1,7 @@
 Install anaconda (https://www.continuum.io/downloads)
 Run commands:
->> conda create -n IDA python=3.5
+>> conda create -n IDA python=3.6
 >> activate IDA
 >> conda install numpy matplotlib scipy theano h5py
->> pip install keras
->> conda install opencv3 -c menpo
+>> conda install keras -c conda-forge
+>> conda install opencv -c conda-forge
