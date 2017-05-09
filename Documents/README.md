@@ -1,9 +1,12 @@
+How to Setup:
+
+
 Install anaconda (https://www.continuum.io/downloads)
 Run commands:
 >> conda create -n IDA python=3.6
 >> activate IDA
 >> conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py
->> conda install keras -c conda-forge
+>> conda install keras -c conda-forgHG
 >> conda install opencv -c conda-forge
 
 
