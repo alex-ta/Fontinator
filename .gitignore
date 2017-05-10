@@ -1,7 +1,10 @@
 
 # User specific PyCharm settings
-*.idea/workspace.xml
+/.idea
 
-# byte code for python interpreter 
+# byte code for python interpreter
 *.pyc
 /images
+
+# Ignore OSX specific
+.DS_Store
