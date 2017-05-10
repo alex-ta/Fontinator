@@ -4,3 +4,4 @@
 
 # byte code for python interpreter 
 *.pyc
+/images
