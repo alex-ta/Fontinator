@@ -1,9 +1,9 @@
 
 # Zu erzeugende images pro Font
-IMAGE_COUNT = 150
+IMAGE_COUNT = 100
 
 # Pfad zur Eingabedatei, aus der Zufallssätze erzeugt werden
-TEXT_INPUT_FILE_PATH = "inputText.txt"
+TEXT_INPUT_FILE_PATH = "text_res\\inputText_2.txt"
 
 # Pfad zum Order der alle Fonts enthält (Fonts sollten im ttf-Format sein)
 FONT_INPUT_PATH = "fonts"
