@@ -1,8 +1,10 @@
 import os
 import uuid
 from pathlib import Path
+import json
 
 from keras.models import model_from_json
+from numpy.core.multiarray import ndarray
 
 
 class ModelSerializer:
@@ -11,10 +13,12 @@ class ModelSerializer:
     _model_id_dir: Path = None
     _model_structure_file: Path = None
     _model_weights_file: Path = None
+    _model_label_mapping_file = None
 
     # filenames
     MODEL_STRUCTURE_FN = 'model.json'
     MODEL_WEIGHTS_FN = "model.h5"
+    MODEL_LABEL_MAP_FN = "label_mapping.json"
 
     def __init__(self, unique_name = None, base_dir: str = "SavedModels"):
         self._base_dir = Path(base_dir)
@@ -27,6 +31,7 @@ class ModelSerializer:
         self._model_id_dir = self._base_dir.joinpath(unique_name)
         self._model_structure_file = self._model_id_dir.joinpath(self.MODEL_STRUCTURE_FN)
         self._model_weights_file = self._model_id_dir.joinpath(self.MODEL_WEIGHTS_FN)
+        self._model_label_mapping_file = self._model_id_dir.joinpath(self.MODEL_LABEL_MAP_FN)
 
     # Save the NN model to disk
     def serialize_to_disk(self, model):
@@ -66,3 +71,15 @@ class ModelSerializer:
         if not self._model_structure_file.is_file() and not self._model_weights_file.is_file():
             return False
         return True
+
+    # Saves the labels and the mapping fo the output layer of the NN
+    def save_label_mapping(self, labels: list, indexes: list):
+        if type(labels) is ndarray:
+            labels = labels.tolist()
+        if type(indexes) is ndarray:
+            indexes = indexes.tolist()
+
+        data = {'labels': labels, 'indexes': indexes}
+
+        with open(self._model_label_mapping_file, 'w') as outfile:
+            json.dump(data, outfile)

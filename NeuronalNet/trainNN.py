@@ -10,7 +10,7 @@ from NeuronalNet.ModelSerializer import ModelSerializer
 from NeuronalNet.Preprocessor import *
 
 # Loads the images from the defined path
-data_loader: DataLoader = DataLoader('X:\WichtigeDaten\GitProjects\\tmp\\1000_Images')
+data_loader: DataLoader = DataLoader('X:\WichtigeDaten\GitProjects\\tmp\\2500_Images')
 
 image_count = data_loader.get_image_count()
 font_count = data_loader.get_font_count()
@@ -68,12 +68,16 @@ model.compile(optimizer=nn_optimizer,
 
 # x_train and y_train are Numpy arrays --just like in the Scikit-Learn API.
 print("Training the NN model")
-model.fit(train_X, train_y, epochs=1000, batch_size=int(0.8*x.size))
+model.fit(train_X, train_y, epochs=500, batch_size=int(0.8*x.size))
 
 loss_and_metrics = model.evaluate(test_X, test_y, batch_size=int(0.8*x.size))
 print(loss_and_metrics)
 
 # Save the NN model to disk
-model_serializer = ModelSerializer("ALL1000")
+print("Saving NN model and the label index mapping")
+model_serializer = ModelSerializer("ALL2500")
 model_serializer.serialize_to_disk(model)
+
+label_ids = label_encoder.transform(label_encoder.classes_)
+model_serializer.save_label_mapping(label_encoder.classes_, label_ids)
 
