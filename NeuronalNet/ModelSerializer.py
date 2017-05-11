@@ -48,7 +48,7 @@ class ModelSerializer:
             json_file.write(model_json)
 
         # serialize model weights to HDF5 file
-        model.save_weights(self._model_weights_file)
+        model.save_weights(str(self._model_weights_file))
         print("Saved model to disk ")
 
     def load_model_from_files(self):
@@ -63,7 +63,7 @@ class ModelSerializer:
         model = model_from_json(loaded_model_json)
 
         # load weights into new model
-        model.load_weights(self._model_weights_file)
+        model.load_weights(str(self._model_weights_file))
         return model
 
     # Checks if model can be loaded from saved files
