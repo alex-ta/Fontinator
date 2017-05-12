@@ -5,15 +5,15 @@ from keras.utils import np_utils
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
-from NeuronalNet.DataLoader import *
-from NeuronalNet.ModelSerializer import ModelSerializer
-from NeuronalNet.Preprocessor import *
+from NeuronalNet.Oli.libs.Preprocessor import *
+from NeuronalNet.Oli.libs.DataLoader import DataLoader
+from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
 
-#__________Configuration__________#
+# __________Configuration__________#
 # Path to folder which contains subfolders which with the images
 IMG_PATH = 'X:\WichtigeDaten\GitProjects\\tmp\\100_Images'
 # Count of epoches when learning the NN model
-TRAIN_EPOCHS = 1
+TRAIN_EPOCHS = 2
 # Name for model when saved
 MODEL_NAME = "Demo"
 # The ratio of data to use for training (0.0 < x < 1.0)
@@ -32,7 +32,7 @@ label_encoder.fit(font_names)
 label_ids = label_encoder.transform(label_encoder.classes_)
 print("Mapping labels:\n{0} \n -> {1}".format(font_names, label_ids))
 
-#save the mapping to disk
+# save the mapping to disk
 model_serializer = ModelSerializer(MODEL_NAME)
 model_serializer.save_label_mapping(label_encoder.classes_, label_ids)
 
@@ -82,12 +82,12 @@ model.compile(optimizer=nn_optimizer,
 
 # x_train and y_train are Numpy arrays --just like in the Scikit-Learn API.
 print("Training the NN model")
-model.fit(train_X, train_y, epochs=TRAIN_EPOCHS, batch_size=int(0.8*x.size), validation_data=(test_X, test_y))
+model.fit(train_X, train_y, epochs=TRAIN_EPOCHS, batch_size=int(0.8 * x.size),
+                    validation_data=(test_X, test_y))
 
-loss_and_metrics = model.evaluate(test_X, test_y, batch_size=int(0.8*x.size))
+loss_and_metrics = model.evaluate(test_X, test_y, batch_size=int(0.8 * x.size))
 print(loss_and_metrics)
 
 # Save the NN model to disk
 print("Saving NN model and the label index mapping")
 model_serializer.serialize_to_disk(model)
-

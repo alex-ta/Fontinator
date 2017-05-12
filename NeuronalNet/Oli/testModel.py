@@ -1,13 +1,15 @@
 from keras.optimizers import RMSprop
 from keras.utils import np_utils
 from sklearn.preprocessing import LabelEncoder
-
-from NeuronalNet.DataLoader import *
-from NeuronalNet.ModelSerializer import ModelSerializer
-from NeuronalNet.Preprocessor import *
+import numpy as np
+from numpy import ndarray
 
 #__________Configuration__________#
 # Path to folder which contains subfolders which with the images
+from NeuronalNet.Oli.libs.DataLoader import DataLoader
+from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
+from NeuronalNet.Oli.libs.Preprocessor import Preprocessor
+
 IMG_PATH = 'test_images'
 # Name for model when saved
 MODEL_NAME = "ALL2500_AC0.5"
