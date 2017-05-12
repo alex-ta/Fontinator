@@ -26,11 +26,15 @@ train_X, test_X, train_y, test_y = train_test_split(dx, dy, train_size=0.75, ran
 
 model = serialize.load_model()
 
+model.compile(loss='categorical_crossentropy',
+              optimizer='rmsprop',
+              metrics=['accuracy'])
+
 loss_and_metrics = model.evaluate(test_X, test_y, batch_size=10)
 # calculate predictions
 #predictions = model.predict(dx[0])
 # round predictions
 print(loss_and_metrics)
-
+print(model.history)
 #print (model.predict(np.array([test_X[0],test_X[1]])))
 #print (test_y[0],test_y[1])
