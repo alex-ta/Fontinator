@@ -1,19 +1,20 @@
-import os
-
-from keras.layers import Dense, Activation, Dropout
-from keras.models import Sequential
 from keras.optimizers import RMSprop
 from keras.utils import np_utils
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 from NeuronalNet.DataLoader import *
 from NeuronalNet.ModelSerializer import ModelSerializer
 from NeuronalNet.Preprocessor import *
 
+#__________Configuration__________#
+# Path to folder which contains subfolders which with the images
+IMG_PATH = 'test_images'
+# Name for model when saved
+MODEL_NAME = "ALL2500_AC0.5"
+
 # Load the NN model from disk
 print("Loading model from disk")
-model_serializer = ModelSerializer("LongTrained")
+model_serializer = ModelSerializer(MODEL_NAME)
 model = model_serializer.load_model_from_files()
 
 print("Compiling NN model ...")
@@ -23,20 +24,21 @@ model.compile(optimizer=nn_optimizer,
               metrics=['accuracy'])
 
 # Loads the images from the defined path
-data_loader: DataLoader = DataLoader('X:\WichtigeDaten\GitProjects\\tmp\\1000_Images')
+data_loader: DataLoader = DataLoader(IMG_PATH)
+font_names: list = data_loader.get_font_names()
 
 image_count = data_loader.get_image_count()
 font_count = data_loader.get_font_count()
 print("Found {0} images with {1} different fonts".format(image_count, font_count))
 
-preprocessor: Preprocessor = Preprocessor()
-
-font_names: list = data_loader.get_font_names()
-
+# Map labels(str) to class_ids(int)
 label_encoder = LabelEncoder()
 label_encoder.fit(font_names)
+label_ids = label_encoder.transform(label_encoder.classes_)
+print("Mapping labels:\n{0} \n -> {1}".format(font_names, label_ids))
 
 print("Start preprocessing images ...")
+preprocessor: Preprocessor = Preprocessor()
 features = []
 labels = []
 # Iterate over all fonts
