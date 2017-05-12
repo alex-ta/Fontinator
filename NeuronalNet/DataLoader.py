@@ -1,8 +1,11 @@
 from collections import Iterable
 from pathlib import Path
 
-''' Manages loading of all data '''
+
 class DataLoader:
+    """
+    Manages loading of all data
+    """
 
     _img_base_dir: Path = None
     _font_names = []
