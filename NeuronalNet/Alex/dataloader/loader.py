@@ -1,6 +1,7 @@
 # load dataset from file
 from os import listdir
 from os.path import isfile, join, basename
+import numpy as np
 import cv2
 
 
@@ -67,6 +68,7 @@ def parse_to_NN_dataset(dataset, print_out=1):
         print(str(len(data_array))+" datasets read")
     return data_array
 
+#parse to x and y dataset
 def parse_to_xy_array(dataset, print_out=1):
     data_x = []
     data_y = []
@@ -82,7 +84,9 @@ def parse_to_xy_array(dataset, print_out=1):
                 data_y.extend(y)
     if print_out:
         print("x: "+str(len(data_x))+" y:"+str(len(data_y))+" datasets read")
-    return data_x,data_y
+    return np.array(data_x, dtype='int32'),np.array(data_y)
+
+
 
 # MM Data class
 class NNData:
