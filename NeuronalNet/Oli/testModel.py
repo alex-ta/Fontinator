@@ -10,9 +10,9 @@ from NeuronalNet.Oli.libs.Preprocessor import Preprocessor
 
 #__________Configuration__________#
 # Path to folder which contains subfolders which with the images
-IMG_PATH = 'images/test_scan'
+IMG_PATH = 'X:\WichtigeDaten\GitProjects\Fontinator\DataGenerator\images'
 # Name for model when saved
-MODEL_NAME = "ALL2500_AC0.87"
+MODEL_NAME = "SavedModels/ALL2500_AC0.87"
 
 # Load the NN model from disk
 print("Loading model from disk")

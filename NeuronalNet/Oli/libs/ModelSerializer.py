@@ -23,18 +23,13 @@ class ModelSerializer:
     MODEL_WEIGHTS_FN = "model.h5"
     MODEL_LABEL_MAP_FN = "label_mapping.json"
 
-    def __init__(self, unique_name=None, base_dir: str = "SavedModels"):
+    def __init__(self, base_dir: str = "SavedModels"):
         self._base_dir = Path(base_dir)
 
-        # If unique_name is not set -> Replace with uuid
-        if unique_name is None:
-            unique_name = str(uuid.uuid4())
-
         # Create paths to dirs and files
-        self._model_id_dir = self._base_dir.joinpath(unique_name)
-        self._model_structure_file = self._model_id_dir.joinpath(self.MODEL_STRUCTURE_FN)
-        self._model_weights_file = self._model_id_dir.joinpath(self.MODEL_WEIGHTS_FN)
-        self._model_label_mapping_file = self._model_id_dir.joinpath(self.MODEL_LABEL_MAP_FN)
+        self._model_structure_file = self._base_dir.joinpath(self.MODEL_STRUCTURE_FN)
+        self._model_weights_file = self._base_dir.joinpath(self.MODEL_WEIGHTS_FN)
+        self._model_label_mapping_file = self._base_dir.joinpath(self.MODEL_LABEL_MAP_FN)
 
     def serialize_to_disk(self, model):
         '''
@@ -103,11 +98,9 @@ class ModelSerializer:
 
     def __create_dirs_if_necessary(self):
         '''
-        Create the directories if they don't exist
+        Create the directorie if they don't exist
         :return: None
         '''
         # Create dirs if they don't exist
         if not self._base_dir.exists():
             self._base_dir.mkdir()
-        if not self._model_id_dir.exists():
-            self._model_id_dir.mkdir()

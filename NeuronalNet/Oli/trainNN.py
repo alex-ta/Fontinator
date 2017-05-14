@@ -1,3 +1,4 @@
+from keras.callbacks import Callback, CSVLogger
 from keras.layers import Dense, Activation, Dropout
 from keras.models import Sequential
 from keras.optimizers import RMSprop
@@ -5,6 +6,7 @@ from keras.utils import np_utils
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
+from NeuronalNet.Oli.libs.TrainingLogger import *
 from NeuronalNet.Oli.libs.Preprocessor import *
 from NeuronalNet.Oli.libs.DataLoader import DataLoader
 from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
@@ -13,9 +15,9 @@ from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
 # Path to folder which contains subfolders which with the images
 IMG_PATH = 'X:\WichtigeDaten\GitProjects\\tmp\\100_Images'
 # Count of epoches when learning the NN model
-TRAIN_EPOCHS = 2
+TRAIN_EPOCHS = 5
 # Name for model when saved
-MODEL_NAME = "Demo"
+OUTPUT_PATH = "SavedModels/Demo"
 # The ratio of data to use for training (0.0 < x < 1.0)
 TRAIN_SIZE = 0.8
 
@@ -33,7 +35,7 @@ label_ids = label_encoder.transform(label_encoder.classes_)
 print("Mapping labels:\n{0} \n -> {1}".format(label_encoder.classes_, label_ids))
 
 # save the mapping to disk
-model_serializer = ModelSerializer(MODEL_NAME)
+model_serializer = ModelSerializer(OUTPUT_PATH)
 model_serializer.save_label_mapping(label_encoder.classes_, label_ids)
 
 print("Start preprocessing images ...")
@@ -80,12 +82,20 @@ model.compile(optimizer=nn_optimizer,
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-# x_train and y_train are Numpy arrays --just like in the Scikit-Learn API.
-print("Training the NN model")
-model.fit(train_X, train_y, epochs=TRAIN_EPOCHS, batch_size=int(0.8 * x.size),
-                    validation_data=(test_X, test_y))
+# Saves stats while training the NN
+train_logger = TrainingLogger(OUTPUT_PATH, frequent_write=False)
 
-loss_and_metrics = model.evaluate(test_X, test_y, batch_size=int(0.8 * x.size))
+print("Training the NN model")
+model.fit(train_X, train_y, epochs=TRAIN_EPOCHS, batch_size=int(0.25 * x.size),
+                    validation_data=(test_X, test_y), callbacks=[train_logger])
+
+
+# Write csv file and plot image for trainign stats
+train_logger.write_csv()
+train_logger.make_plots()
+
+# Calculate the metrics for the trained model
+loss_and_metrics = model.evaluate(test_X, test_y, batch_size=int(0.25 * x.size))
 print(loss_and_metrics)
 
 # Save the NN model to disk
