@@ -30,7 +30,7 @@ print("Found {0} images with {1} different fonts".format(image_count, font_count
 label_encoder = LabelEncoder()
 label_encoder.fit(font_names)
 label_ids = label_encoder.transform(label_encoder.classes_)
-print("Mapping labels:\n{0} \n -> {1}".format(font_names, label_ids))
+print("Mapping labels:\n{0} \n -> {1}".format(label_encoder.classes_, label_ids))
 
 # save the mapping to disk
 model_serializer = ModelSerializer(MODEL_NAME)

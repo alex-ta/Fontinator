@@ -33,6 +33,7 @@ else:
 
 # Loading data from file into dict for sentence generation
 word_dict = WordDict.load_from_textfile(cfg.TEXT_INPUT_FILE_PATH)
+print("Loaded {0} words ...".format(word_dict.get_word_count()))
 
 # Iterate for all available fonts
 for font_file in fonts_dir.iterdir():

@@ -4,15 +4,15 @@ from sklearn.preprocessing import LabelEncoder
 import numpy as np
 from numpy import ndarray
 
-#__________Configuration__________#
-# Path to folder which contains subfolders which with the images
 from NeuronalNet.Oli.libs.DataLoader import DataLoader
 from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
 from NeuronalNet.Oli.libs.Preprocessor import Preprocessor
 
-IMG_PATH = 'test_images'
+#__________Configuration__________#
+# Path to folder which contains subfolders which with the images
+IMG_PATH = 'images/test_scan'
 # Name for model when saved
-MODEL_NAME = "ALL2500_AC0.5"
+MODEL_NAME = "ALL2500_AC0.87"
 
 # Load the NN model from disk
 print("Loading model from disk")
@@ -37,7 +37,7 @@ print("Found {0} images with {1} different fonts".format(image_count, font_count
 label_encoder = LabelEncoder()
 label_encoder.fit(font_names)
 label_ids = label_encoder.transform(label_encoder.classes_)
-print("Mapping labels:\n{0} \n -> {1}".format(font_names, label_ids))
+print("Mapping labels:\n{0} \n -> {1}".format(label_encoder.classes_, label_ids))
 
 print("Start preprocessing images ...")
 preprocessor: Preprocessor = Preprocessor()
