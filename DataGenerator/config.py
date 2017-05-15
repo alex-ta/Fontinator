@@ -1,15 +1,18 @@
 
 # Zu erzeugende images pro Font
-IMAGE_COUNT = 100
+IMAGE_COUNT = 200
+
+# Name der Datei, die Text für Zufallssätze enthält
+INPUT_TXT_FILE = "raw_char_groups"
 
 # Pfad zur Eingabedatei, aus der Zufallssätze erzeugt werden
-TEXT_INPUT_FILE_PATH = "text_res\\inputText_2.txt"
+TEXT_INPUT_FILE_PATH = "text_res/" + INPUT_TXT_FILE + ".txt"
 
 # Pfad zum Order der alle Fonts enthält (Fonts sollten im ttf-Format sein)
 FONT_INPUT_PATH = "fonts"
 
 # Pfad zum Order für die erzeugten images
-IMG_OUTPUT_PATH = "images"
+IMG_OUTPUT_PATH = "images/" + INPUT_TXT_FILE
 
 # Breite der erzeugten Bilder
 IMG_WIDTH = 1200

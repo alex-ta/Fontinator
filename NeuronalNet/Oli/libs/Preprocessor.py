@@ -1,14 +1,23 @@
 import numpy as np
 from PIL import Image
 from numpy.core.multiarray import ndarray
+from abc import ABC, abstractmethod
 
-"""
-Manages all necessary transformations go prepare the image data for the neuronal network
-"""
-class Preprocessor:
 
-    def __init__(self):
+class AbstractPreprocessor(ABC):
+    """
+    An abstract baseclass for a image preprocessing class
+    """
+
+    @abstractmethod
+    def prepare_image(self, img_name: str) -> ndarray:
         pass
+
+
+class SimplePreprocessor(AbstractPreprocessor):
+    """
+    Manages all necessary transformations go prepare the image data for the neuronal network
+    """
 
     def prepare_image(self, img_name: str) -> ndarray:
         """

@@ -39,7 +39,7 @@ model_serializer = ModelSerializer(OUTPUT_PATH)
 model_serializer.save_label_mapping(label_encoder.classes_, label_ids)
 
 print("Start preprocessing images ...")
-preprocessor: Preprocessor = Preprocessor()
+preprocessor: SimplePreprocessor = SimplePreprocessor()
 features = []
 labels = []
 # Iterate over all fonts

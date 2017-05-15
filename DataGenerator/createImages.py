@@ -29,7 +29,7 @@ if img_dir.exists():
         shutil.rmtree(str(font_img_dir))
 else:
     # Create img dir
-    img_dir.mkdir()
+    img_dir.mkdir(parents=True)
 
 # Loading data from file into dict for sentence generation
 word_dict = WordDict.load_from_textfile(cfg.TEXT_INPUT_FILE_PATH)

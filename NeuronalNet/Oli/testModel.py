@@ -6,18 +6,18 @@ from numpy import ndarray
 
 from NeuronalNet.Oli.libs.DataLoader import DataLoader
 from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
-from NeuronalNet.Oli.libs.Preprocessor import Preprocessor
+from NeuronalNet.Oli.libs.Preprocessor import SimplePreprocessor, AbstractPreprocessor
 
 #__________Configuration__________#
 # Path to folder which contains subfolders which with the images
-IMG_PATH = 'X:\WichtigeDaten\GitProjects\Fontinator\DataGenerator\images'
+IMG_PATH = 'X:\WichtigeDaten\GitProjects\Fontinator\DataGenerator\images\\test_scan'
 # Name for model when saved
-MODEL_NAME = "SavedModels/ALL2500_AC0.87"
+MODEL_PATH = "SavedModels/ALL2500_AC0.87"
 
 # Load the NN model from disk
 print("Loading model from disk")
-model_serializer = ModelSerializer(MODEL_NAME)
-model = model_serializer.load_model_from_files()
+model_serializer = ModelSerializer(MODEL_PATH)
+model = model_serializer.load_from_path()
 
 print("Compiling NN model ...")
 nn_optimizer = RMSprop(lr=0.0001)
@@ -40,7 +40,7 @@ label_ids = label_encoder.transform(label_encoder.classes_)
 print("Mapping labels:\n{0} \n -> {1}".format(label_encoder.classes_, label_ids))
 
 print("Start preprocessing images ...")
-preprocessor: Preprocessor = Preprocessor()
+preprocessor: AbstractPreprocessor = SimplePreprocessor()
 features = []
 labels = []
 # Iterate over all fonts

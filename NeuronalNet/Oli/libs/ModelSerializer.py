@@ -49,7 +49,7 @@ class ModelSerializer:
         model.save_weights(str(self._model_weights_file))
         print("Saved model to disk ")
 
-    def load_model_from_files(self):
+    def load_from_path(self):
         '''
         Loads the keras NN model from disk 
         :return: None
