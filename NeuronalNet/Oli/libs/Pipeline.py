@@ -12,20 +12,19 @@ from NeuronalNet.Oli.libs.Preprocessor import IPreprocessor
 
 
 class Pipeline:
-    def __init__(self, img_path: str):
+    def __init__(self):
         self.font_names: list = None
-        self.img_path: str = img_path
         self.model_path: str = None
         self.model = None
         self.preprocessor: IPreprocessor = None
         self.label_encoder = None
         pass
 
-    def load_features(self, img_preprocessor: IPreprocessor) -> (ndarray, ndarray):
+    def load_features(self, img_path: str, img_preprocessor: IPreprocessor) -> (ndarray, ndarray):
         self.preprocessor = img_preprocessor
 
         # Loads the images from the defined path
-        data_loader: ImageLoader = ImageLoader(self.img_path)
+        data_loader: ImageLoader = ImageLoader(img_path)
         self.font_names = data_loader.get_font_names()
         image_count = data_loader.get_image_count()
         font_count = data_loader.get_font_count()
@@ -56,7 +55,7 @@ class Pipeline:
         y: ndarray = np.array(labels)
         return x, y
 
-    def _compile_model(self):
+    def __compile_model(self):
         print("Compiling NN model ...")
         nn_optimizer = RMSprop(lr=0.0001)
         self.model.compile(optimizer=nn_optimizer,
@@ -68,7 +67,7 @@ class Pipeline:
         print("Loading model from disk")
         model_serializer = ModelSerializer(model_path)
         self.model = model_serializer.load_from_path()
-        self._compile_model()
+        self.__compile_model()
 
     def train_model(self, keras_model, x: ndarray, y: ndarray, epos=1000, train_ratio=0.8):
 
@@ -83,7 +82,7 @@ class Pipeline:
         # Saves stats while training the NN
         self.train_logger: TrainingLogger = TrainingLogger(self.model_path, frequent_write=False)
 
-        self._compile_model()
+        self.__compile_model()
 
         print("Training the NN model")
         self.model.fit(train_X, train_y, epochs=epos, batch_size=int(0.25 * train_X.shape[0]),
@@ -93,15 +92,16 @@ class Pipeline:
         loss_and_metrics = keras_model.evaluate(test_X, test_y, batch_size=int(0.25 * x.size))
         print(loss_and_metrics)
 
-    def save_model(self, model_path: str, include_stats=True):
+    def save_model(self, model_save_path: str, include_stats=True):
 
         # save the mapping of the features to disk
-        model_serializer = ModelSerializer(self.model_path)
+        model_serializer = ModelSerializer(model_save_path)
         label_ids = self.label_encoder.transform(self.label_encoder.classes_)
         model_serializer.save_label_mapping(self.label_encoder.classes_, label_ids)
 
         # Write csv file and plot image for training stats
         if include_stats is True:
+            self.train_logger.set_basepath(model_save_path)
             self.train_logger.write_csv()
             self.train_logger.make_plots()
 

@@ -32,10 +32,13 @@ class TrainingLogger(keras.callbacks.Callback):
         super().__init__()
         self.write_frequent = frequent_write
         if basepath:
-            self.basepath: Path = Path(basepath)
-            self.basepath.mkdir(parents=True, exist_ok=True)
-            self.history_filepath = self.basepath.joinpath(self.CSV_FILENAME)
-            self.plot_filepath = self.basepath.joinpath(self.PLOT_FILENAME)
+            self.set_basepath(basepath)
+
+    def set_basepath(self, basepath: str):
+        self.basepath: Path = Path(basepath)
+        self.basepath.mkdir(parents=True, exist_ok=True)
+        self.history_filepath = self.basepath.joinpath(self.CSV_FILENAME)
+        self.plot_filepath = self.basepath.joinpath(self.PLOT_FILENAME)
 
     def on_train_begin(self, logs=None):
         if logs is None:

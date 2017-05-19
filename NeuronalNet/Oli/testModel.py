@@ -8,14 +8,14 @@ IMG_PATH = 'X:\WichtigeDaten\GitProjects\Fontinator\DataGenerator\images\\raw_ch
 MODEL_LOAD_PATH = "SavedModels/ALL2500_AC0.87"
 
 # Pipeline managing working with keras model
-pipeline: Pipeline = Pipeline(MODEL_LOAD_PATH, IMG_PATH)
+pipeline: Pipeline = Pipeline()
 
 # Loads all images and extract features and labels
 preprocessor: IPreprocessor = SimplePreprocessor()
-x, y = pipeline.load_features(img_preprocessor=preprocessor)
+x, y = pipeline.load_features(IMG_PATH, img_preprocessor=preprocessor)
 
 # Load the model from disk
-pipeline.load_model()
+pipeline.load_model(MODEL_LOAD_PATH)
 
 # Make predictions with loaded model
 y_pred = pipeline.predict(x)
