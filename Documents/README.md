@@ -6,7 +6,7 @@ Run commands:
 1. conda create -n IDA python=3.6
 2. activate IDA
 3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py
-4. conda install keras -c conda-forgHG
+4. conda install keras -c conda-forge
 5. conda install opencv -c conda-forge
 
 

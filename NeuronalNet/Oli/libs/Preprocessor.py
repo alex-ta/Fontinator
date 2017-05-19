@@ -4,7 +4,7 @@ from numpy.core.multiarray import ndarray
 from abc import ABC, abstractmethod
 
 
-class AbstractPreprocessor(ABC):
+class IPreprocessor(ABC):
     """
     An abstract baseclass for a image preprocessing class
     """
@@ -14,9 +14,10 @@ class AbstractPreprocessor(ABC):
         pass
 
 
-class SimplePreprocessor(AbstractPreprocessor):
+class SimplePreprocessor(IPreprocessor):
     """
-    Manages all necessary transformations go prepare the image data for the neuronal network
+    Manages all necessary transformations go prepare the image data for the neuronal network.
+    This includes binarization and flattening of the picture
     """
 
     def prepare_image(self, img_name: str) -> ndarray:

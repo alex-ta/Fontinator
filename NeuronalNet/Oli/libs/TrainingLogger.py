@@ -37,7 +37,6 @@ class TrainingLogger(keras.callbacks.Callback):
             self.history_filepath = self.basepath.joinpath(self.CSV_FILENAME)
             self.plot_filepath = self.basepath.joinpath(self.PLOT_FILENAME)
 
-
     def on_train_begin(self, logs=None):
         if logs is None:
             logs = {}

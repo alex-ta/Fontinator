@@ -1,8 +1,12 @@
 from collections import Iterable
 from pathlib import Path
+from sklearn.preprocessing import LabelEncoder
+from numpy.core.multiarray import ndarray
+
+from NeuronalNet.Oli.libs.Preprocessor import IPreprocessor
 
 
-class DataLoader:
+class ImageLoader:
     """
     Manages loading of all data
     """
@@ -55,6 +59,3 @@ class DataLoader:
 
     def get_image_count(self) -> int:
         return self._img_count_global
-
-
-
