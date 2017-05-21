@@ -2,6 +2,7 @@ from keras.models import model_from_json
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from keras.utils import np_utils
+import numpy as np
 
     # returns train/test data (x = data, y = label) and encoder and the classes
 def get_train_testxy_set(x,y,train_size=0.75, one_hot = 1, random_state = 0):
@@ -11,7 +12,7 @@ def get_train_testxy_set(x,y,train_size=0.75, one_hot = 1, random_state = 0):
         one_hot_y = np_utils.to_categorical(one_hot_y,len(classes))
     # split in test and train
     train_x, test_x, train_y, test_y = train_test_split(x, one_hot_y, train_size = train_size, random_state = random_state)
-    return train_x, test_x, train_y, test_y, label_encoder, classes
+    return np.array(train_x), np.array(test_x), train_y, test_y, label_encoder, classes
 
     # returns the label from one_hot array
 def get_label_from_one_hot(one_hot, label_encoder):
