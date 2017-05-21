@@ -16,6 +16,11 @@ def write_csv(var, path = default_path):
                 row.append(values[ki][vi])
             writer.writerow(row)
 
+def write_line_csv(row, path=default_path):
+	with open(path, 'a', newline='\n') as csvfile:
+		writer = csv.writer(csvfile, delimiter=';',quotechar=';', quoting=csv.QUOTE_MINIMAL)
+		writer.writerow(row)
+
 def read_csv(path = default_path):
     keys = []
     values = []

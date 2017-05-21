@@ -10,6 +10,7 @@ import numpy as np
 from dataloader import loader
 from dataloader import serialize
 from dataloader import plot
+from .Callback import Logger
 
 class Pipe:
 	def __init__(self, data_path = "C:/Users/Alex/Downloads/images", train_size=0.6):
@@ -31,6 +32,8 @@ class Pipe:
 		self.model_name = model_name
 		self.epochsize = epochsize
 		self.batchsize = batchsize
+		logger = Logger();
+		
 		#img_dimen = 40 * 1200 * 3
 		#prepare model and global data
 		model = Sequential()
@@ -40,7 +43,7 @@ class Pipe:
 		#excute and load model as pythoncommands
 		exec(compile(open(command_file_name, "rb").read(), command_file_name, 'exec'))
 		# fit the rasult
-		result = model.fit(self.train_x, self.train_y, epochs=self.epochsize, batch_size=self.batchsize)
+		result = model.fit(self.train_x, self.train_y, validation_data=(self.test_x, self.test_y), epochs=self.epochsize, batch_size=self.batchsize, callbacks=[logger])
 		#create model folder and delete existing before
 		if os.path.exists(self.model_name):
 			shutil.rmtree(self.model_name)
