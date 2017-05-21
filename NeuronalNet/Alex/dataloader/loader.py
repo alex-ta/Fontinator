@@ -51,8 +51,8 @@ def read_to_NN_dataset(file, print_out=1):
     return parse_to_NN_dataset(read_to_dataset(file, print_out), print_out)
 
 # reads files to arrays x and y
-def read_to_xy_array(file, print_out=1):
-    return parse_to_xy_array(read_to_dataset(file, print_out), print_out)
+def read_to_xy_array(file, flatten=0, print_out=1):
+    return parse_to_xy_array(read_to_dataset(file, print_out), flatten, print_out)
 
 
 # parses normal data to NN data
@@ -69,13 +69,16 @@ def parse_to_NN_dataset(dataset, print_out=1):
     return data_array
 
 #parse to x and y dataset
-def parse_to_xy_array(dataset, print_out=1):
+def parse_to_xy_array(dataset, flatten=0, print_out=1):
     data_x = []
     data_y = []
     for data in dataset:
         if data.get_file():
             x,y = NNData(data).to_xy_data()
-            data_x.append(x)
+            if flatten:
+                data_x.append(x.flatten())
+            else:
+                data_x.append(x)
             data_y.append(y)
         else:
             for d_array in data.get_data():
@@ -84,7 +87,7 @@ def parse_to_xy_array(dataset, print_out=1):
                 data_y.extend(y)
     if print_out:
         print("x: "+str(len(data_x))+" y:"+str(len(data_y))+" datasets read")
-    return np.array(data_x, dtype='int32'),np.array(data_y)
+    return data_x,data_y
 
 
 
@@ -92,7 +95,7 @@ def parse_to_xy_array(dataset, print_out=1):
 class NNData:
     def __init__(self, data):
         if data.get_file():
-            self.data = data.get_data()
+            self.data = data.get_data()[0]
             self.label = data.get_label()
             self.name = data.get_name()
     def get_label(self):
@@ -102,5 +105,6 @@ class NNData:
     def get_name(self):
         return self.name
     def to_xy_data(self):
+        print("-->" + self.name + " " + self.label)
         # data is x (get the img array), label is y
-        return self.data[0],self.label
+        return self.data,self.label

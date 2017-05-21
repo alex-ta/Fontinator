@@ -3,7 +3,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from keras.utils import np_utils
 
-
     # returns train/test data (x = data, y = label) and encoder and the classes
 def get_train_testxy_set(x,y,train_size=0.75, one_hot = 1, random_state = 0):
     label_encoder, classes, one_hot_y = get_encoder(y)
@@ -16,7 +15,7 @@ def get_train_testxy_set(x,y,train_size=0.75, one_hot = 1, random_state = 0):
 
     # returns the label from one_hot array
 def get_label_from_one_hot(one_hot, label_encoder):
-    y_index = one_hot.argmax(axis=1)
+    y_index = one_hot.argmax()#axis = 1
     return label_encoder.inverse_transform(y_index)
 
     # returns the label encoder for labels, the unique classes and the transformed labels
