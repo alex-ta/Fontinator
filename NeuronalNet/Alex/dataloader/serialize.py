@@ -1,8 +1,12 @@
-from keras.models import model_from_json
+import keras
+import os
+from keras.models import *
+from keras.layers import *
+from keras.optimizers import *
+from keras.utils import *
+import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from keras.utils import np_utils
-import numpy as np
 
     # returns train/test data (x = data, y = label) and encoder and the classes
 def get_train_testxy_set(x,y,train_size=0.75, one_hot = 1, random_state = 0):
@@ -25,22 +29,22 @@ def get_encoder(labels):
     label_encoder.fit(labels)
     return label_encoder, label_encoder.classes_, label_encoder.transform(labels)
 
-def save_model(model, model_name = "model.json", weights_name = "model.h5"):
+def save_model(model, path="", model_name = "model.json", weights_name = "model.h5"):
     # serialize model to JSON
     model_json = model.to_json()
-    with open(model_name, "w") as json_file:
+    with open(path + "/" + model_name, "w") as json_file:
         json_file.write(model_json)
     # serialize weights to HDF5
-    model.save_weights(weights_name)
-    print("Saved model as " + model_name +" & "+ weights_name)
+    model.save_weights(path + "/" + weights_name)
+    print("Saved model as " + path + "/" + model_name +" & "+ path + "/" + weights_name)
 
-def load_model(model_name = "model.json", weights_name = "model.h5"):
+def load_model(path="", model_name = "model.json", weights_name = "model.h5"):
     # load json and create model
-    json_file = open(model_name, 'r')
+    json_file = open(path + "/" + model_name, 'r')
     loaded_json = json_file.read()
     json_file.close()
     model = model_from_json(loaded_json)
     # load weights into new model
-    model.load_weights(weights_name)
-    print("Loaded model as " + model_name +" & "+ weights_name)
+    model.load_weights(path + "/" + weights_name)
+    print("Loaded model as " + path + "/" + model_name +" & "+ path + "/" + weights_name)
     return model
