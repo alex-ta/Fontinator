@@ -103,4 +103,4 @@ class ModelSerializer:
         '''
         # Create dirs if they don't exist
         if not self._base_dir.exists():
-            self._base_dir.mkdir()
+            self._base_dir.mkdir(parents=True)

@@ -31,7 +31,7 @@ model.add(Activation('relu'))
 model.add(Dropout(rate=0.2))
 model.add(Dense(60))
 model.add(Activation('relu'))
-model.add(Dense(y.max() + 1))
+model.add(Dense(int(y.max() + 1)))
 model.add(Activation('softmax'))
 
 # Train the NN model and save to disk
