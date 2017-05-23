@@ -15,8 +15,8 @@ Easy way:
 1. conda create --name tensorflow python=3.5
 2. activate tensorflow
 3. pip install tensorflow
-* # or
-* # pip install tensorflow-gpu
+* or
+* pip install tensorflow-gpu
 3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py
 4. conda install keras -c conda-forge
 5. conda install opencv -c conda-forge
