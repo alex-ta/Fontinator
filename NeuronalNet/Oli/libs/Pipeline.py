@@ -69,7 +69,7 @@ class Pipeline:
         self.model = model_serializer.load_from_path()
         self.__compile_model()
 
-    def train_model(self, keras_model, x: ndarray, y: ndarray, epos=1000, train_ratio=0.8):
+    def train_model(self, keras_model, x: ndarray, y: ndarray, epos=1000, train_ratio=0.8, batch_size=100):
 
         self.model = keras_model
 
@@ -85,11 +85,13 @@ class Pipeline:
         self.__compile_model()
 
         print("Training the NN model")
-        self.model.fit(train_X, train_y, epochs=epos, batch_size=int(0.25 * train_X.shape[0]),
+        if type(batch_size) == float and 0.0 < batch_size <= 1.0:
+            batch_size = int(batch_size * train_X.shape[0])
+        self.model.fit(train_X, train_y, epochs=epos, batch_size=batch_size,
                        validation_data=(test_X, test_y), callbacks=[self.train_logger])
 
         # Calculate the metrics for the trained model
-        loss_and_metrics = keras_model.evaluate(test_X, test_y, batch_size=int(0.25 * x.size))
+        loss_and_metrics = keras_model.evaluate(test_X, test_y, batch_size=batch_size)
         print(loss_and_metrics)
 
     def save_model(self, model_save_path: str, include_stats=True):
