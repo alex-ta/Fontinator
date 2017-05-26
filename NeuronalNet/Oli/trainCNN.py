@@ -21,7 +21,6 @@ pipeline: Pipeline = Pipeline()
 # Loads all images and extrakt features and labels
 preprocessor: IPreprocessor = ConvPreprocessor()
 x, y = pipeline.load_features(IMG_PATH, img_preprocessor=preprocessor)
-
 x = x.reshape(x.shape[0], x.shape[1], x.shape[2], 1)
 
 # Defining the Network structure
