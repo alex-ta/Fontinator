@@ -1,0 +1,25 @@
+# Notes about the results
+
+- All nets wehere trained with ~3000 images per font (0.2 test data, 0.8 training data)
+
+## NN
+- Examples (LT2)
+- Converge very slow (500-1000 epochs; 17h)
+- Can train without batches (all images per epoch)
+- Saved model ~500mb
+
+## CNN
+- Example (ConvLong)
+- Converge very fast (~10 epochs; 1h)
+- Requires smaller batch sizes for training (max 500 images). If batch size greater -> memory overflow
+- Saved model ~200mb
+
+## Pro and Contra
++ Work with whole sentences and single characters
++ Works with different text paddings
+- Very bad results for images with random noise (Accuracy 10-20%)
+
+## Possible improvements
+- Train with images that have random noise
+- Preproces images before prediction (filters)
+

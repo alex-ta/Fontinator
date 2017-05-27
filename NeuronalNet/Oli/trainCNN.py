@@ -25,16 +25,16 @@ x = x.reshape(x.shape[0], x.shape[1], x.shape[2], 1)
 
 # Defining the Network structure
 model = Sequential()
-model.add(Conv2D(10, kernel_size=(3, 3),
+model.add(Conv2D(8, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=x.shape[1:]))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-#model.add(Conv2D(20, kernel_size=(3, 3)))
-#model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(10, kernel_size=(3, 3)))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.2))
 model.add(Flatten())
 model.add(Dense(2000, activation='relu'))
-model.add(Dropout(0.3))
+model.add(Dropout(0.2))
 model.add(Dense(int(y.max() + 1), activation='softmax'))
 
 # Train the NN model and save to disk
