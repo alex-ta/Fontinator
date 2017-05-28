@@ -1,6 +1,14 @@
 # Notes about the results
 
-- All nets wehere trained with ~3000 images per font (0.2 test data, 0.8 training data)
+- training data has 12 labels (font types)
+- All nets where trained with ~3000 images per font (0.2 test data, 0.8 training data)
+
+## Format of used training images
+- images contain random sentences
+- Centered in height
+- Padding left 10px
+- font size 24px
+
 
 ## NN
 - Examples (LT2)
@@ -8,11 +16,24 @@
 - Can train without batches (all images per epoch)
 - Saved model ~500mb
 
+### Accuracy Stats (LT2)
+- Test_Data:
+- Unknown Text:
+
+
 ## CNN
 - Example (ConvLong)
 - Converge very fast (~10 epochs; 1h)
 - Requires smaller batch sizes for training (max 500 images). If batch size greater -> memory overflow
 - Saved model ~200mb
+
+### Accuracy Stats (ConvLong)
+- Test_Data: ~99%
+- Less words: ~92%
+- Unknown Text: ~90%
+- Other size (12px): ~16%
+- Other position: ~8%
+
 
 ## Pro and Contra
 + Work with whole sentences and single characters

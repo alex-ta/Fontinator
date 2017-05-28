@@ -46,7 +46,7 @@ for font_file in fonts_dir.iterdir():
     if not img_font_dir.exists():
         img_font_dir.mkdir()
 
-    img_height = cfg.FONT_SIZE + 2 * cfg.PADDING_TOP_BOTTOM
+    img_height = cfg.FONT_SIZE + 2 * cfg.PADDING_TOP
     font = ImageFont.truetype(str(font_file), cfg.FONT_SIZE)
     # Create multiple images for each font
     for i in range(cfg.IMAGE_COUNT):
@@ -56,7 +56,7 @@ for font_file in fonts_dir.iterdir():
 
         # Draw random sentence to image
         text = word_dict.get_sentence(cfg.WORD_COUNT)
-        draw.text((10, 3), text, (0, 0, 0), font=font)
+        draw.text((10, cfg.PADDING_TOP), text, (0, 0, 0), font=font)
 
         # Save file in folder for used font
         file_name = "{}_{}.png".format(font_file.stem, i)

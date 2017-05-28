@@ -43,7 +43,7 @@ class Pipeline:
         for f_name in self.font_names:
             print(" -> {0}".format(f_name))
             label_id = self.label_encoder.transform([f_name])
-            font_labels = np.full(data_loader.get_img_count_for_font(f_name), label_id)
+            font_labels = np.full(data_loader.get_img_count_for_font(f_name), label_id, dtype=np.float32)
             labels.extend(font_labels)
 
             # Iterate over all images for one font
