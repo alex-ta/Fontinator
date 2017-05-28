@@ -46,17 +46,16 @@ for font_file in fonts_dir.iterdir():
     if not img_font_dir.exists():
         img_font_dir.mkdir()
 
-    img_height = cfg.FONT_SIZE + 2 * cfg.PADDING_TOP
     font = ImageFont.truetype(str(font_file), cfg.FONT_SIZE)
     # Create multiple images for each font
     for i in range(cfg.IMAGE_COUNT):
         # Create raw image
-        image = Image.new("RGBA", (cfg.IMG_WIDTH, img_height), (255, 255, 255))
+        image = Image.new("RGBA", (cfg.IMG_WIDTH, cfg.IMG_HEIGHT), (255, 255, 255))
         draw = ImageDraw.Draw(image)
 
         # Draw random sentence to image
         text = word_dict.get_sentence(cfg.WORD_COUNT)
-        draw.text((10, cfg.PADDING_TOP), text, (0, 0, 0), font=font)
+        draw.text((cfg.PADDING_RIGHT, cfg.PADDING_TOP), text, (0, 0, 0), font=font)
 
         # Save file in folder for used font
         file_name = "{}_{}.png".format(font_file.stem, i)

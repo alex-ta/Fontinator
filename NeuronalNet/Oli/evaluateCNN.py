@@ -3,9 +3,9 @@ from NeuronalNet.Oli.libs.Preprocessor import *
 
 #__________Configuration__________#
 # Path to folder which contains subfolders which with the images
-IMG_PATH = 'X:\WichtigeDaten\GitProjects\Fontinator\DataGenerator\images\Scanned fonts'
+IMG_PATH = '../../DataGenerator/images/text_it_mgmt'
 # Name for model when saved
-MODEL_LOAD_PATH = "X:\WichtigeDaten\GitProjects\Fontinator\\NeuronalNet\SavedModels\ConvLong"
+MODEL_LOAD_PATH = "../SavedModels/ConvLong"
 
 # Pipeline managing working with keras model
 pipeline: Pipeline = Pipeline()

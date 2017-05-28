@@ -9,7 +9,6 @@
 - Padding left 10px
 - font size 24px
 
-
 ## NN
 - Examples (LT2)
 - Converge very slow (500-1000 epochs; 17h)
@@ -17,9 +16,14 @@
 - Saved model ~500mb
 
 ### Accuracy Stats (LT2)
-- Test_Data:
-- Unknown Text:
-
+- Test_Data: ~99%
+- Unknown Text: ~90%
+- Less words (2 of 8): ~70%
+- Less words (4 of 8): ~90%
+- Other font size (12px): ~8%
+- Other x-position(+20px): ~87%
+- Other x-position(+150px): ~55%
+- Other y-position: ~8%
 
 ## CNN
 - Example (ConvLong)
@@ -29,10 +33,13 @@
 
 ### Accuracy Stats (ConvLong)
 - Test_Data: ~99%
-- Less words: ~92%
+- Less words (2 of 8): ~60%
+- Less words (4 of 8): ~92%
 - Unknown Text: ~90%
-- Other size (12px): ~16%
-- Other position: ~8%
+- Other font size (12px): ~16%
+- Other x-position(+20px): ~85%
+- Other x-position(+150px): ~45%
+- Other y-position: ~8%
 
 
 ## Pro and Contra

@@ -3,7 +3,7 @@ from NeuronalNet.Oli.libs.Preprocessor import SimplePreprocessor, IPreprocessor
 
 #__________Configuration__________#
 # Path to folder which contains subfolders which with the images
-IMG_PATH = 'X:\WichtigeDaten\GitProjects\Fontinator\DataGenerator\images\\test_scan'
+IMG_PATH = '../../DataGenerator/images/text_it_mgmt'
 # Name for model when saved
 MODEL_LOAD_PATH = "../SavedModels/LT2"
 
