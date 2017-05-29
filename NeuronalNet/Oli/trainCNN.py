@@ -7,9 +7,11 @@ from NeuronalNet.Oli.libs.Preprocessor import *
 
 # __________Configuration__________#
 # Path to folder which contains subfolders which with the images
-IMG_PATH = '/home/oli/Downloads/Fontinator/DataGenerator/images/text_vietnam'
+IMG_PATH = '../../DataGenerator/images/text_it_mgmt'
 # Count of epoches when learning the NN model
-TRAIN_EPOCHS = 1
+TRAIN_EPOCHS = 10
+# The bath size (items trained per batch)
+BATCH_SIZE = 600
 # Name for model when saved
 MODEL_OUTPUT_PATH = "SavedModels/CNN"
 # The ratio of data to use for training (0.0 < x < 1.0)
@@ -38,7 +40,7 @@ model.add(Dropout(0.2))
 model.add(Dense(int(y.max() + 1), activation='softmax'))
 
 # Train the NN model and save to disk
-pipeline.train_model(model, x, y, epos=TRAIN_EPOCHS, train_ratio=TRAIN_RATIO, batch_size=150)
+pipeline.train_model(model, x, y, epos=TRAIN_EPOCHS, train_ratio=TRAIN_RATIO, batch_size=BATCH_SIZE)
 
 # Saves the model structure, weights and additional metadata about the training
 pipeline.save_model(MODEL_OUTPUT_PATH)
