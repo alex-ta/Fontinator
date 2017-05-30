@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import csv
 
 default_path = "result.csv"
-default_color = ["red","blue","yellow","green"]
+default_color = ["red","blue","yellow","green","grey","blue"]
 
 def write_csv(var, path = default_path):
     keys = list(var.keys())
@@ -40,5 +40,19 @@ def plot_csv(path = default_path):
     keys, values = read_csv(path)
     for ki in range(len(keys)):
         plt.plot(values[ki], range(len(values[ki])), color=default_color[ki], linewidth=2.5, linestyle="-", label=keys[ki])
+    plt.legend(loc='upper left')
+    plt.show()
+	
+def plot_csv_multipath(path = default_path, skeys=["acc","val_acc","loss","val_loss","time"], group=2):
+    keys, values = read_csv(path)
+    i = 0
+    plt.subplot(221)
+    for ki in range(len(skeys)):
+        i = i + 1
+        vi = keys.index(skeys[ki])
+        plt.plot(range(len(values[vi])), values[vi], color=default_color[ki], linewidth=2.5, linestyle="-", label=skeys[ki])
+        if (i % group) == 0:
+            plt.legend(loc='upper left')
+            plt.subplot(221+int(i/group))
     plt.legend(loc='upper left')
     plt.show()

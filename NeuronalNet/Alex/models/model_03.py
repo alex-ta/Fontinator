@@ -13,7 +13,6 @@ model.add(Conv2D(16, kernel_size=(3, 3),
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Conv2D(16, kernel_size=(3, 3),
 				 activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Conv2D(24, kernel_size=(3, 3),
 				 activation='sigmoid'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
