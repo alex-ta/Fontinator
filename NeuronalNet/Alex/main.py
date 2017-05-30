@@ -3,23 +3,23 @@ from modelpipe import pipe
 import numpy as np
 
 #create pipe
-datapipe = pipe.Pipe(data_path = "C:/Users/Alex/Downloads/images", train_size=0.6)
+datapipe = pipe.Pipe(data_path = "E:\images\pirates", train_size=0.6)
 
 #load data
 test_x, test_y = datapipe.load_data(flatten=0, print_out=1)
 
 #create model
-result = datapipe.run(model_name = "models/model_01", epochsize = 3000, batchsize = 100)
+#result = datapipe.run(model_name = "models/model_01", epochsize = 3000, batchsize = 100)
+#print(result)
+#result = datapipe.run(model_name = "models/model_02", epochsize = 1200, batchsize = 100)
+#print(result)
+result = datapipe.run(model_name = "models/model_03", epochsize = 1200, batchsize = 100)
 print(result)
-result = datapipe.run(model_name = "models/model_02", epochsize = 3000, batchsize = 100)
+result = datapipe.run(model_name = "models/model_04", epochsize = 1200, batchsize = 100)
 print(result)
-result = datapipe.run(model_name = "models/model_03", epochsize = 3000, batchsize = 100)
+result = datapipe.run(model_name = "models/model_05", epochsize = 1200, batchsize = 100)
 print(result)
-result = datapipe.run(model_name = "models/model_04", epochsize = 3000, batchsize = 100)
-print(result)
-result = datapipe.run(model_name = "models/model_05", epochsize = 3000, batchsize = 100)
-print(result)
-result = datapipe.run(model_name = "models/model_06", epochsize = 3000, batchsize = 100)
+result = datapipe.run(model_name = "models/model_06", epochsize = 1200, batchsize = 100)
 print(result)
 
 
