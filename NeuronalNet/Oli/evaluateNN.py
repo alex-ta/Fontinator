@@ -1,4 +1,4 @@
-from NeuronalNet.Oli.libs.Pipeline import Pipeline
+from NeuronalNet.Oli.libs.NetManager import NetManager
 from NeuronalNet.Oli.libs.Preprocessor import SimplePreprocessor, IPreprocessor
 
 #__________Configuration__________#
@@ -8,20 +8,20 @@ IMG_PATH = '../../DataGenerator/images/text_it_mgmt'
 MODEL_LOAD_PATH = "../SavedModels/LT2"
 
 # Pipeline managing working with keras model
-pipeline: Pipeline = Pipeline()
+netManager: NetManager = NetManager()
 
 # Loads all images and extract features and labels
 preprocessor: IPreprocessor = SimplePreprocessor()
-x, y = pipeline.load_features(IMG_PATH, img_preprocessor=preprocessor)
+x, y = netManager.load_features(IMG_PATH, img_preprocessor=preprocessor)
 
 # Load the model from disk
-pipeline.load_model(MODEL_LOAD_PATH)
+netManager.load_model(MODEL_LOAD_PATH)
 
 # Make predictions with loaded model
-y_pred = pipeline.predict(x)
+y_pred = netManager.predict(x)
 
 # Evaluate model on test images and show summary
-pipeline.evaluate(y, y_pred)
+netManager.evaluate(y, y_pred)
 
 
 

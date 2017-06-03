@@ -11,7 +11,7 @@ from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
 from NeuronalNet.Oli.libs.Preprocessor import IPreprocessor
 
 
-class Pipeline:
+class NetManager:
     def __init__(self):
         self.font_names: list = None
         self.model_path: str = None
