@@ -10,5 +10,5 @@ Die Fonts müssen im .ttf Format vorliegen.
 Die erzeuten Bilderdaten werden standardmäßig im Ordner 'images' abgelegt.
 
 ## Starten
-Ausführen des Skripts "createImages.py".
-werden alle Fonts eingelesen und Trainings- und Testbilder erzeugt.
+Zum Starten muss das Skript "createImages.py" ausgeführt werden.
+Es werden alle Fonts eingelesen und die Trainings- und Testbilder erzeugt.

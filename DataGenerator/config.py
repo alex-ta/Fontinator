@@ -2,6 +2,9 @@
 # Zu erzeugende images pro Font
 IMAGE_COUNT = 500
 
+# Erster Index im Name des erzeugten Bildes
+START_NUM = 0
+
 # Name der Datei, die Text für Zufallssätze enthält
 INPUT_TXT_FILE = "text_zfs"
 
@@ -17,9 +20,6 @@ IMG_OUTPUT_PATH = "images/" + INPUT_TXT_FILE
 # Breite und Höhe der erzeugten Bilder
 IMG_WIDTH = 1200
 IMG_HEIGHT = 40
-
-# Erster index im Name des erzeugten Bildes
-START_NUM = 0
 
 # Minimale und maximale Anzahl der Wörter pro Satz
 WORD_COUNT_MAX = 8
