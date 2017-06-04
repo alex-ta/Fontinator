@@ -82,19 +82,15 @@ class TrainingLogger(keras.callbacks.Callback):
         :param show: Shows the plots to the user and blocks execution meanwhile
         :return: None
         """
-        fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, sharey=False)
-        ax2.set_xlabel('epoch')
-        fig.suptitle('Accuracy & Computation time')
+        fig, ax1 = plt.subplots(1, 1)
+        fig.suptitle('Training Accuracy')
+        ax1.set_xlabel('epoch')
+        ax1.set_ylabel('accuracy')
 
         # Plot accuracy on epoch
-        ax1.plot(self.history.index, self.history[K_ACC])
-        ax1.set_ylabel('accuracy')
-        #ax1.set_ylim(bottom=0.0, auto=True)
-
-        # Plot calculation time on epoch
-        ax2.plot(self.history.index, self.history[K_TDIFF])
-        ax2.set_ylabel('time (s)')
-        #ax2.set_ylim(bottom=0.0, auto=True)
+        ax1.plot(self.history.index, self.history[K_VAL_ACC], label="training accuracy")
+        ax1.plot(self.history.index, self.history[K_ACC], label="validation accuracy")
+        ax1.legend()
 
         # Save to disk or show to user
         if save_to_disk:
