@@ -31,6 +31,8 @@ for folder in font_folders:
 for image_path_font in image_path_font_list:
     print(image_path_font[0])
     image = cv2.imread(image_path_font[0])
+    #binarize
+    ret, thresh1 = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
     '''DEBUG SIFT
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     sift = cv2.xfeatures2d.SIFT_create()
@@ -87,13 +89,11 @@ for image_path_font in image_path_font_list:
     #cv2.imshow('dst', image)
     #if cv2.waitKey(0) & 0xff == 27:
         #cv2.destroyAllWindows()'''
-
-glyphs = extractGlyphes.extract_glyphs(image)
+glyphs = extractGlyphes.extract_glyphs(thresh1)
 
 '''DEBUG Glyphs'''
 for glyph in glyphs:
     print(glyph)
-    weight = extractFeatures.get_mean_vertical_position(glyph)
-    print(weight)
+    vertical = extractFeatures.get_mean_number_of_vertical_edges(glyph)
     cv2.imshow('dst', glyph)
     cv2.waitKey(0)

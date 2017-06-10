@@ -20,33 +20,26 @@ def get_num_of_pixels(binary_image):
     return sum_total_pixels, sum_white_pixels, sum_black_pixels
 
 def get_horizontal_position(binary_image):
-    line_count = 0
-    col_count = 0
-    pos_array = []
-    for line in binary_image:
-        for pixel in line:
-            if np.any(pixel < 255):
-                #falls es eine weitere zeile gibt, in welcher der col_count kleiner ist als der bisher gefundene, müsste man den col_count nehmen!
-                pos_array = [line_count, col_count]
-                return pos_array
-            col_count = col_count + 1
-        line_count = line_count + 1
-        col_count = 0
-    return [0,0]
+    width = get_width(binary_image)
+    left_edge = get_left_edge_pos(binary_image)
+    center = width / 2
+    mod = center % 2
+    if mod > 0:
+        center = center - 0.5
+    else:
+        center = center + 0.5
+    return left_edge + center
 
 def get_vertical_position(binary_image):
-    line_count = 0
-    col_count = 0
-    pos_array = []
-    for line in binary_image:
-        for pixel in line:
-            if np.any(pixel < 255):
-                pos_array = [line_count, col_count]
-                break
-            col_count = col_count + 1
-        line_count = line_count + 1
-        col_count = 0
-    return pos_array
+    height = get_height(binary_image)
+    top_edge = get_top_edge_pos(binary_image)
+    center = height / 2
+    mod = center % 2
+    if mod > 0:
+        center = center - 0.5
+    else:
+        center = center + 0.5
+    return top_edge + center
 
 def get_width(binary_image):
     width = 0
@@ -90,69 +83,129 @@ def get_top_edge_pos(binary_image):
     return line_count
 
 def get_mean_horizontal_position(binary_image):
-    #total, white, black = get_num_of_pixels(binary_image)
+    center = get_horizontal_position(binary_image)
     width = get_width(binary_image)
-    left_edge_pos = get_left_edge_pos(binary_image)
-    center = (width / 2)
-    mod = center % 2
-    center_left = 0
-    center_right = 0
-    if mod > 0:
-        center_left = center - mod - 1 + left_edge_pos
-        center_right = center + mod + left_edge_pos
-    else:
-        center_left = center + left_edge_pos
-        center_right = center + 1 + left_edge_pos
     weight = 0
     weight_array =  []
     for line in binary_image:
         col_count = 0
         for pixel in line:
             if np.any(pixel < 255):
-                if col_count <= center_left:
-                    weight = (col_count - center_left) / width
-                    weight_array.append(weight)
-                elif col_count >= center_right:
-                    weight = (col_count - center_right) / width
-                    weight_array.append(weight)
-                else:
-                    weight = 0
-                    weight_array.append(weight)
+                weight = (col_count - center) / width
+                weight_array.append(weight)
             col_count = col_count + 1
         col_count = 0
     horizontal_weight = sum(weight_array)
     return horizontal_weight
 
 def get_mean_vertical_position(binary_image):
-    # total, white, black = get_num_of_pixels(binary_image)
+    center = get_vertical_position(binary_image)
     height = get_height(binary_image)
-    top_edge_pos = get_top_edge_pos(binary_image)
-    center = (height / 2)
-    mod = center % 2
-    center_top = 0
-    center_bottom = 0
-    if mod > 0:
-        center_top = center - mod - 1 + top_edge_pos
-        center_bottom = center + mod + top_edge_pos
-    else:
-        center_top = center + top_edge_pos
-        center_bottom = center + 1 + top_edge_pos
     weight = 0
     weight_array = []
     line_count = 0
     for line in binary_image:
         for pixel in line:
             if np.any(pixel < 255):
-                if line_count <= center_top:
-                    weight = (line_count - center_top) / height
-                    weight_array.append(weight)
-                elif line_count >= center_bottom:
-                    weight = (line_count - center_bottom) / height
-                    weight_array.append(weight)
-                else:
-                    weight = 0.0
-                    weight_array.append(weight)
+                weight = (line_count - center) / height
         line_count = line_count + 1
     vertical_weight = sum(weight_array)
     return vertical_weight
 
+def get_mean_squared_horizontal_position(binary_image):
+    res = get_mean_horizontal_position(binary_image)
+    res = res * res
+    return res
+
+def get_mean_squared_vertical_position(binary_image):
+    res = get_mean_vertical_position(binary_image)
+    res = res * res
+    return res
+
+def get_correlation_of_horizontal_variance(binary_image):
+    line_count = 0
+    col_count = 0
+    correlation_array = []
+    for line in binary_image:
+        for pixel in line:
+            if np.any(pixel < 255):
+                correlation_array.append(col_count * col_count * line_count)
+            col_count = col_count + 1
+        line_count = line_count + 1
+        col_count = 0
+    mean = sum(correlation_array) / len(correlation_array)
+    return mean
+
+def get_correlation_of_vertical_variance(binary_image):
+    line_count = 0
+    col_count = 0
+    correlation_array = []
+    for line in binary_image:
+        for pixel in line:
+            if np.any(pixel < 255):
+                correlation_array.append(col_count * line_count * line_count)
+            col_count = col_count + 1
+        line_count = line_count + 1
+        col_count = 0
+    mean = sum(correlation_array) / len(correlation_array)
+    return mean
+
+def get_mean_number_of_vertical_edges(binary_image):
+    line_count = 0
+    col_count = 0
+    edges = 0
+    edge_array = []
+    edge_pos_array = []
+    for line in binary_image:
+        for pixel in line:
+            if np.any(pixel < 255):
+                if binary_image[line_count][col_count + 1] == 255:
+                    edges = edges + 1
+                    edge_pos_array.append([line_count, col_count])
+            col_count = col_count + 1
+            edge_array.append(edges)
+            edges = 0
+        line_count = line_count + 1
+        col_count = 0
+    mean_edges = sum(edge_array) / len(edge_array)
+    return mean_edges, edge_pos_array
+
+def get_sum_of_vertical_edges(binary_image):
+    mean_edges, edge_pos_array = get_mean_number_of_vertical_edges(binary_image)
+    line_array = []
+    for line in edge_pos_array:
+        for first_item in line:
+            line_array.append(first_item)
+            break
+    sum_pos = sum(line_array)
+    return sum_pos
+
+def get_mean_number_of_horizontal_edges(binary_image):
+    line_count = 0
+    col_count = 0
+    edges = 0
+    edge_array = []
+    edge_pos_array = []
+    for line in binary_image:
+        for pixel in line:
+            if np.any(pixel < 255):
+                if binary_image[line_count + 1][col_count ] == 255:
+                    edges = edges + 1
+                    edge_pos_array.append([line_count, col_count])
+            col_count = col_count + 1
+            edge_array.append(edges)
+            edges = 0
+        line_count = line_count + 1
+        col_count = 0
+    mean_edges = sum(edge_array) / len(edge_array)
+    return mean_edges, edge_pos_array
+
+def get_sum_of_horizontal_edges(binary_image):
+    mean_edges, edge_pos_array = get_mean_number_of_horizontal_edges(binary_image)
+    line_array = []
+    for line in edge_pos_array:
+        for first_item in line:
+            line_array.append(first_item)
+            break
+    sum_pos = sum(line_array)
+    return sum_pos
