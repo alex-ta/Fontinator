@@ -158,7 +158,8 @@ def get_typographical_lines(binary_image):
                 middle_line = idx
 
         elif ground_line == None:
-            if diff < -threshold:
+            # TODO No idea if this works
+            if diff < -threshold or val == 0:
                 ground_line = idx
 
         elif val == 0:
