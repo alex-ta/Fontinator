@@ -5,6 +5,12 @@ import numpy as np
 import extractGlyphes
 import extractFeatures
 from matplotlib import pyplot as plt
+import math
+
+import classifier
+
+cla = classifier.Classifier()
+cla.loadTrainedClassifier('./classie.pickle')
 
 local_path = os.path.dirname(os.path.realpath(__file__))
 images_path = os.path.join(local_path, '..', 'images')
@@ -22,17 +28,22 @@ for folder in font_folders:
                 image_path_font_list.append([image_path, folder])
 
                 i += 1
-                if i == 1:
+                if i == 10:
                     break
 
-#image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/canterbury/canterbury_101.png', 'a']]
+#image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/arial/arial_101.png', 'a']]
 #image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/jokerman/jokerman_0.png', 'a']]
+all_prediction = [];
+all_label = [];
+
+for i in range(0, 12):
+    for j in range(0, 10):
+        all_label.append(i)
+
 
 for image_path_font in image_path_font_list:
     print(image_path_font[0])
     image = cv2.imread(image_path_font[0])
-    #binarize
-    ret, thresh1 = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
     '''DEBUG SIFT
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     sift = cv2.xfeatures2d.SIFT_create()
@@ -89,11 +100,37 @@ for image_path_font in image_path_font_list:
     #cv2.imshow('dst', image)
     #if cv2.waitKey(0) & 0xff == 27:
         #cv2.destroyAllWindows()'''
-glyphs = extractGlyphes.extract_glyphs(thresh1)
 
-'''DEBUG Glyphs'''
-for glyph in glyphs:
-    print(glyph)
-    vertical = extractFeatures.get_mean_number_of_vertical_edges(glyph)
-    cv2.imshow('dst', glyph)
-    cv2.waitKey(0)
+    glyphs = extractGlyphes.extract_glyphs(image)
+    glyph_features = []
+    font_predictions = []
+    '''DEBUG Glyphs'''
+    for glyph in glyphs:
+        #print(glyph)
+        #weight = extractFeatures.get_mean_vertical_position(glyph)
+        #print(weight)
+        #cv2.imshow('dst', glyph)
+        #cv2.waitKey(0)
+        glyph_features = extractFeatures.get_feature_vector(glyph)
+        prediction = cla.predictData([glyph_features])
+        pred_char = prediction % 62
+        pred_font = math.floor(prediction / 62)
+        font_predictions.append(pred_font)
+        #print("Prediction " + str(prediction) + " Font " + str(pred_font) + " Char " + str(pred_char))
+        #cv2.imshow('dst', glyph)
+        #cv2.waitKey(0)
+
+    print( np.bincount(font_predictions, minlength=12) )
+    print( np.argmax(np.bincount(font_predictions)) )
+
+    all_prediction.append( np.argmax(np.bincount(font_predictions)) )
+
+correct = 0
+false = 0
+for i in range(0, len(all_prediction)):
+    if all_prediction[i] == all_label[i]:
+        correct += 1
+    else:
+        false += 1
+
+print('Accuracy: ' + str(correct/(correct+false)))
