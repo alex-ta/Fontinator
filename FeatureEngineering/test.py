@@ -9,6 +9,11 @@ import math
 
 import classifier
 
+from sklearn.svm import SVC
+from sklearn.feature_selection import RFE
+
+n_test_pictures = 1
+
 cla = classifier.Classifier()
 cla.loadTrainedClassifier('./classie.pickle')
 
@@ -28,19 +33,21 @@ for folder in font_folders:
                 image_path_font_list.append([image_path, folder])
 
                 i += 1
-                if i == 10:
+                if i == n_test_pictures:
                     break
 
 #image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/arial/arial_101.png', 'a']]
 #image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/jokerman/jokerman_0.png', 'a']]
+#image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/forte/forte_43.png', 'a']]
+#image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/times_new_romance/times_new_romance_43.png', 'a']]
 all_prediction = [];
 all_label = [];
 
 for i in range(0, 12):
-    for j in range(0, 10):
+    for j in range(0, n_test_pictures):
         all_label.append(i)
 
-
+all_glyph_features = []
 for image_path_font in image_path_font_list:
     print(image_path_font[0])
     image = cv2.imread(image_path_font[0])
@@ -101,7 +108,7 @@ for image_path_font in image_path_font_list:
     #if cv2.waitKey(0) & 0xff == 27:
         #cv2.destroyAllWindows()'''
 
-    glyphs = extractGlyphes.extract_glyphs(image)
+    glyphs, p_line, ground_line, middle_line, t_line, spacing = extractGlyphes.extract_glyphs(image)
     glyph_features = []
     font_predictions = []
     '''DEBUG Glyphs'''
@@ -109,16 +116,28 @@ for image_path_font in image_path_font_list:
         #print(glyph)
         #weight = extractFeatures.get_mean_vertical_position(glyph)
         #print(weight)
-        #cv2.imshow('dst', glyph)
-        #cv2.waitKey(0)
+
         glyph_features = extractFeatures.get_feature_vector(glyph)
+
+        #glyph_features.append( (ground_line-middle_line) / (p_line-t_line) )
+        #glyph_features.append( (p_line-ground_line) / (p_line-t_line) )
+        #glyph_features.append( (middle_line-t_line) / (p_line-t_line) )
+        #glyph_features.append( spacing )
+
+        all_glyph_features.append(glyph_features)
         prediction = cla.predictData([glyph_features])
-        pred_char = prediction % 62
-        pred_font = math.floor(prediction / 62)
+        pred_char = prediction % 80
+        pred_font = math.floor(prediction / 80)
         font_predictions.append(pred_font)
         #print("Prediction " + str(prediction) + " Font " + str(pred_font) + " Char " + str(pred_char))
         #cv2.imshow('dst', glyph)
         #cv2.waitKey(0)
+        train_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789ÄÖÜäöü!"()[]?ß.,+-'
+        print( train_chars[pred_char[0]] )
+        print( pred_font )
+
+        cv2.imshow('dst', glyph)
+        cv2.waitKey(0)
 
     print( np.bincount(font_predictions, minlength=12) )
     print( np.argmax(np.bincount(font_predictions)) )
