@@ -380,7 +380,7 @@ def get_feature_vector(binary_image):
 
     feature_vector.append( get_correlation_of_vertical_variance(binary_image) )
 
-    feature_vector.append( get_num_of_connected_componens(binary_image) )
+    #feature_vector.append( get_num_of_connected_componens(binary_image) )
 
     #feature_vector.append( get_mean_number_of_vertical_edges(binary_image) )
 

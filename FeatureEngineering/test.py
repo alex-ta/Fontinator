@@ -12,7 +12,7 @@ import classifier
 from sklearn.svm import SVC
 from sklearn.feature_selection import RFE
 
-n_test_pictures = 1
+n_test_pictures = 150
 
 cla = classifier.Classifier()
 cla.loadTrainedClassifier('./classie.pickle')
@@ -133,11 +133,11 @@ for image_path_font in image_path_font_list:
         #cv2.imshow('dst', glyph)
         #cv2.waitKey(0)
         train_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789ÄÖÜäöü!"()[]?ß.,+-'
-        print( train_chars[pred_char[0]] )
-        print( pred_font )
+        #print( train_chars[pred_char[0]] )
+        #print( pred_font )
 
-        cv2.imshow('dst', glyph)
-        cv2.waitKey(0)
+        #cv2.imshow('dst', glyph)
+        #cv2.waitKey(0)
 
     print( np.bincount(font_predictions, minlength=12) )
     print( np.argmax(np.bincount(font_predictions)) )
