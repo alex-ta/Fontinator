@@ -2,7 +2,7 @@
 ###     Skript liest Fonts ein und erzeugt Trainings- und Testbilder ###
 ###     Configuration erfolgt in "config.py"                         ###
 ########################################################################
-
+import random
 from pathlib import Path
 
 import shutil
@@ -29,10 +29,11 @@ if img_dir.exists():
         shutil.rmtree(str(font_img_dir))
 else:
     # Create img dir
-    img_dir.mkdir()
+    img_dir.mkdir(parents=True)
 
 # Loading data from file into dict for sentence generation
 word_dict = WordDict.load_from_textfile(cfg.TEXT_INPUT_FILE_PATH)
+print("Loaded {0} words ...".format(word_dict.get_word_count()))
 
 # Iterate for all available fonts
 for font_file in fonts_dir.iterdir():
@@ -45,19 +46,26 @@ for font_file in fonts_dir.iterdir():
     if not img_font_dir.exists():
         img_font_dir.mkdir()
 
-    img_height = cfg.FONT_SIZE + 2 * cfg.PADDING_TOP_BOTTOM
-    font = ImageFont.truetype(str(font_file), cfg.FONT_SIZE)
     # Create multiple images for each font
     for i in range(cfg.IMAGE_COUNT):
+
+        # Create font
+        font_size = random.randint(cfg.FONT_SIZE_MIN, cfg.FONT_SIZE_MAX)
+        font = ImageFont.truetype(str(font_file), font_size)
+
         # Create raw image
-        image = Image.new("RGBA", (cfg.IMG_WIDTH, img_height), (255, 255, 255))
+        image = Image.new("RGBA", (cfg.IMG_WIDTH, cfg.IMG_HEIGHT), (255, 255, 255))
         draw = ImageDraw.Draw(image)
 
         # Draw random sentence to image
-        text = word_dict.get_sentence(cfg.WORD_COUNT)
-        draw.text((10, 3), text, (0, 0, 0), font=font)
+        word_count = random.randint(cfg.WORD_COUNT_MIN, cfg.WORD_COUNT_MAX)
+        text = word_dict.get_sentence(word_count)
+
+        padding_left = random.randint(cfg.PADDING_LEFT_MIN, cfg.PADDING_LEFT_MAX)
+        padding_top = random.randint(cfg.PADDING_TOP_MIN, cfg.PADDING_TOP_MAX)
+        draw.text((padding_left, padding_top), text, (0, 0, 0), font=font)
 
         # Save file in folder for used font
-        file_name = "{}_{}.png".format(font_file.stem, i)
+        file_name = "{}_{}.png".format(font_file.stem, i + cfg.START_NUM)
         img_path = img_font_dir.joinpath(file_name)
         image.save(img_path)

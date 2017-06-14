@@ -22,3 +22,7 @@ class WordDict:
             rand_word = self._ger_word_dict[r_int]
             sentence += rand_word + " "
         return sentence
+
+    # Returns the size of word dict
+    def get_word_count(self):
+        return len(self._ger_word_dict)

@@ -1,0 +1,6 @@
+
+#Don't commit saved models
+/SavedModels
+
+# csv files
+*.csv
