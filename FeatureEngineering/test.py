@@ -19,6 +19,8 @@ cla.loadTrainedClassifier('./classie.pickle')
 
 local_path = os.path.dirname(os.path.realpath(__file__))
 images_path = os.path.join(local_path, '..', 'images')
+#images_path = os.path.join(local_path, '..', 'TestSets','images', 'Dataset_1')
+
 font_folders = os.listdir(images_path)
 image_path_font_list = []
 for folder in font_folders:
@@ -40,6 +42,7 @@ for folder in font_folders:
 #image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/jokerman/jokerman_0.png', 'a']]
 #image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/forte/forte_43.png', 'a']]
 #image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/times_new_romance/times_new_romance_43.png', 'a']]
+#image_path_font_list = [['/Users/Sebastian/Desktop/Master/IDA_Projekt/Repo/Fontinator/images/canterbury/canterbury_101.png', 'a']]
 all_prediction = [];
 all_label = [];
 
@@ -47,6 +50,9 @@ for i in range(0, 12):
     for j in range(0, n_test_pictures):
         all_label.append(i)
 
+i = 0
+correct = 0
+false = 0
 all_glyph_features = []
 for image_path_font in image_path_font_list:
     print(image_path_font[0])
@@ -111,6 +117,11 @@ for image_path_font in image_path_font_list:
     glyphs, p_line, ground_line, middle_line, t_line, spacing = extractGlyphes.extract_glyphs(image)
     glyph_features = []
     font_predictions = []
+
+    if len(glyphs) == 0:
+        print('ERROR: No glyphs extracted')
+        cv2.imshow('a', image)
+        cv2.waitKey(0)
     '''DEBUG Glyphs'''
     for glyph in glyphs:
         #print(glyph)
@@ -130,19 +141,27 @@ for image_path_font in image_path_font_list:
         pred_font = math.floor(prediction / 80)
         font_predictions.append(pred_font)
         #print("Prediction " + str(prediction) + " Font " + str(pred_font) + " Char " + str(pred_char))
-        #cv2.imshow('dst', glyph)
-        #cv2.waitKey(0)
         train_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789ÄÖÜäöü!"()[]?ß.,+-'
         #print( train_chars[pred_char[0]] )
         #print( pred_font )
+        #cv2.imshow('dst', glyph)
+        #cv2.waitKey(0)
 
         #cv2.imshow('dst', glyph)
         #cv2.waitKey(0)
+
+        if pred_font == all_label[i]:
+            correct += 1
+        else:
+            false += 1
 
     print( np.bincount(font_predictions, minlength=12) )
     print( np.argmax(np.bincount(font_predictions)) )
 
     all_prediction.append( np.argmax(np.bincount(font_predictions)) )
+    i += 1
+
+print('Glyph Font Accuracy: ' + str(correct/(correct+false)))
 
 correct = 0
 false = 0
@@ -152,4 +171,4 @@ for i in range(0, len(all_prediction)):
     else:
         false += 1
 
-print('Accuracy: ' + str(correct/(correct+false)))
+print('Text Accuracy: ' + str(correct/(correct+false)))

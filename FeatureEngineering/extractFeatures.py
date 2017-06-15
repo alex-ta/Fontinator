@@ -66,7 +66,7 @@ def get_mean_horizontal_position(binary_image):
     dist_on_pix_center = np.where(binary_image < 255)[1] - center
     dist_on_pix_center = dist_on_pix_center / width
 
-    mean_horizontal_pos = sum(dist_on_pix_center) / len(dist_on_pix_center)
+    mean_horizontal_pos = np.mean(dist_on_pix_center)
 
     return mean_horizontal_pos
 
@@ -77,7 +77,7 @@ def get_mean_vertical_position(binary_image):
     dist_on_pix_center = np.where(binary_image < 255)[0] - center
     dist_on_pix_center = dist_on_pix_center / height
 
-    mean_vertical_pos = sum(dist_on_pix_center) / len(dist_on_pix_center)
+    mean_vertical_pos = np.mean(dist_on_pix_center)
 
     return mean_vertical_pos
 
@@ -152,6 +152,14 @@ def get_correlation_of_vertical_variance(binary_image):
     corr_vert_variance = sum(dist_on_pix_center) / len(dist_on_pix_center)
 
     return corr_vert_variance
+
+def get_horizontal_variance(binary_image):
+    dist =  np.where(binary_image < 255)[1]
+    return np.var(dist)
+
+def get_vertical_variance(binary_image):
+    dist =  np.where(binary_image < 255)[0]
+    return np.var(dist)
 
 def get_sum_of_vertical_edges(binary_image):
     pos_on_pix_v = np.where(binary_image < 255)[0]
@@ -285,6 +293,28 @@ def get_sum_compactness(binary_image):
     else:
         return 0
 
+def get_num_hohles(binary_image):
+    regions = 0
+    binary = cv2.adaptiveThreshold(binary_image, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 9, 1)
+    im2, contours, hierarchy = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+
+    for idx, contour in enumerate(contours):
+        if hierarchy[0][idx][3] != -1:
+            regions += 1
+
+    return regions
+
+def get_num_comps(binary_image):
+    regions = 0
+    binary = cv2.adaptiveThreshold(binary_image, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 9, 1)
+    im2, contours, hierarchy = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+
+    for idx, contour in enumerate(contours):
+        if hierarchy[0][idx][3] == -1:
+            regions += 1
+
+    return regions
+
 def get_horizontal_sharpness(binary_image):
     col_count = binary_image.shape[1];
     line_count = binary_image.shape[0];
@@ -306,10 +336,10 @@ def get_wider_horizontals(binary_image):
 
     for line in range(0, line_count):
         while col < (col_count-1):
-            if np.any(binary_image[line][col] < 255):
+            if np.any(binary_image[line, col] < 255):
                 col += 1
 
-                while (col + 1 < col_count) and np.any(binary_image[line][col+1] < 255):
+                while (col + 1 < col_count) and np.any(binary_image[line, col+1] < 255):
                     cur_width += 1
                     col  += 1
 
@@ -335,87 +365,187 @@ def get_num_of_connected_componens(binary_image):
     # Minus background
     return len(conn_comp) - 1
 
+def get_num_of_connected_hohles(binary_image):
+    binary_image = 255 - binary_image
+    conn_comp = cv2.connectedComponents(binary_image)
+
+    # Minus background
+    return len(conn_comp) - 1
+
+def get_skeletation(binary_image):
+    size = np.size(binary_image)
+    skel = np.zeros(binary_image.shape,np.uint8)
+
+    ret,img = cv2.threshold(binary_image,127,255,cv2.THRESH_BINARY_INV)
+    element = cv2.getStructuringElement(cv2.MORPH_CROSS,(3,3))
+
+    done = False
+
+    #cv2.imshow('a', img)
+    #cv2.waitKey(0)
+
+    i = 0
+    zeros = cv2.countNonZero(img)
+    while( zeros != size):
+        eroded = cv2.erode(img,element)
+        temp = cv2.dilate(eroded,element)
+        temp = cv2.subtract(img,temp)
+        skel = cv2.bitwise_or(skel,temp)
+        img = eroded.copy()
+
+        zeros = size - cv2.countNonZero(img)
+        #if zeros==size:
+        #    done = True
+
+        #i += 1
+        #if i == 100:
+        #    cv2.imshow('a', binary_image)
+        #    cv2.waitKey(0)
+
+    return cv2.countNonZero(skel)
+
+def get_mean_brightness(binary_image):
+    top_edge = get_top_edge_pos(binary_image)
+    left_edge = get_left_edge_pos(binary_image)
+    width = get_width(binary_image)
+    height = get_height(binary_image)
+
+    crop_img = binary_image[top_edge:top_edge+height, left_edge:left_edge+width]
+
+    return ( np.sum(crop_img) / np.size(crop_img) )
+
+
 def get_feature_vector(binary_image):
     feature_vector = []
 
     height = get_height(binary_image)
     width = get_width(binary_image)
-
-    feature_vector.append( height )
-    feature_vector.append( width )
-    feature_vector.append( width / height )
-
     norm, _, black, gray = get_num_of_pixels(binary_image)
-    #feature_vector.append( black / (height*width) )
-    #feature_vector.append( gray / black )
-    feature_vector.append( black / (width * height) )
 
-    # BAD
+    feature_vector.append( get_sum_perimeter(binary_image) / (width + height) )
+
+    skel = get_skeletation(binary_image)
+    if skel != 0:
+        feature_vector.append( get_sum_perimeter(binary_image) / get_skeletation(binary_image) )
+    else:
+       feature_vector.append( 0 )
+
     feature_vector.append( get_mean_horizontal_position(binary_image) )
-
-    # GOOD
     feature_vector.append( get_mean_vertical_position(binary_image) )
+    feature_vector.append( get_sum_of_horizontal_edges(binary_image) / black )
+    feature_vector.append( get_num_hohles(binary_image) )
+    feature_vector.append( get_num_comps(binary_image) )
+    feature_vector.append( get_vertical_variance(binary_image) / height )
+    feature_vector.append( get_horizontal_variance(binary_image) / width )
+
+    #feature_vector.append( height / black )
+    #feature_vector.append( width )
+    #feature_vector.append( height )
+
+
+    #feature_vector.append( gray / (width * height) )
+    #feature_vector.append( black / (width * height) )
+    #feature_vector.append( black )
+
+    #feature_vector.append( black / height )
+    #feature_vector.append( black / width )
+
+    #feature_vector.append( get_mean_brightness(binary_image) )
 
     # BAD
-    feature_vector.append( get_mean_squared_horizontal_position(binary_image) )
+    #feature_vector.append( get_mean_horizontal_position(binary_image) )
 
     # GOOD
-    feature_vector.append( get_mean_squared_vertical_position(binary_image) )
+    #feature_vector.append( get_mean_vertical_position(binary_image) )
 
-    feature_vector.append( get_mean_diagonal_position(binary_image) )
+    # NEUTRAL
+    #feature_vector.append( get_mean_squared_horizontal_position(binary_image) )
+
+    # GOOD
+    #feature_vector.append( get_mean_squared_vertical_position(binary_image) )
+
+    # GOOD
+    #feature_vector.append( get_mean_diagonal_position(binary_image) )
+
+    # GOOD
+    #feature_vector.append( get_sum_of_vertical_edges(binary_image) / (black) )
+    #feature_vector.append( get_sum_of_vertical_edges(binary_image) / (width*height) )
+
+    # GOOD
+    #feature_vector.append( get_sum_of_horizontal_edges(binary_image) / (black) )
+    #feature_vector.append( get_sum_of_horizontal_edges(binary_image) / (width*height) )
+
+    #feature_vector.append( get_num_hohles(binary_image) )
+
+    #feature_vector.append( get_num_comps(binary_image) )
+
+    #feature_vector.append( get_sum_perimeter(binary_image) / (width + height) )
+
+    # GOOD
+    #feature_vector.append( get_sum_of_diagonal_edges(binary_image) / (black) )
+
+    # SCHLECHTER
+    #feature_vector.append( get_sum_of_diagonal_edges(binary_image) / (width*height) )
+
+    # NEUTRAL
+    #feature_vector.append( get_correlation_of_vertical_variance(binary_image) )
 
     # BAD
-    #feature_vector.append(  get_sum_perimeter(binary_image) )
+    #feature_vector.append( get_skeletation(binary_image) / black )
+    #feature_vector.append( get_skeletation(binary_image) / (width*height) )
+    #print ( get_skeletation(binary_image) / black )
+    #cv2.waitKey(0)
 
-    vertical_edges = get_sum_of_vertical_edges(binary_image)
-    # GOOD
-    feature_vector.append( vertical_edges )
+    # BUG feature_vector.append( get_num_of_connected_componens(binary_image) )
+    #feature_vector.append( get_num_of_connected_hohles(binary_image) )
 
-    horizontal_edges = get_sum_of_horizontal_edges(binary_image)
-    # GOOD
-    feature_vector.append( horizontal_edges )
-
-    # Very GOOD
-    feature_vector.append( get_sum_of_diagonal_edges(binary_image) )
-
-    feature_vector.append( get_correlation_of_vertical_variance(binary_image) )
-
-    #feature_vector.append( get_num_of_connected_componens(binary_image) )
-
+    # BAD
     #feature_vector.append( get_mean_number_of_vertical_edges(binary_image) )
 
+    # NEUTRAL
     #feature_vector.append( get_mean_number_of_horizontal_edges(binary_image) )
 
-    # BAD
+    # NOT TESTED
     #if horizontal_edges != 0:
     #    feature_vector.append( get_horizontal_sharpness(binary_image) )
     #else:
     #    feature_vector.append( 0 )
 
-    # BAD
+    # NOT TESTED
     #if vertical_edges != 0:
     #    feature_vector.append( get_vertical_sharpness(binary_image) )
     #else:
     #    feature_vector.append( 0 )
 
-    #BAD
+    # BAD
     #feature_vector.append( get_wider_horizontals(binary_image) )
     ''' '''
 
+    # NEUTRAL
     #feature_vector.append( get_sum_compactness(binary_image) )
 
+    # GOOD
+    #skel = get_skeletation(binary_image)
+    #if skel != 0:
+    #    feature_vector.append( get_sum_perimeter(binary_image) / get_skeletation(binary_image) )
+    #else:
+    #   feature_vector.append( 0 )
+
+    # NEUTRAL
     #feature_vector.append( get_sum_of_vertical_singles(binary_image) / black )
+    #feature_vector.append( get_sum_of_vertical_singles(binary_image) / (width*black) )
 
-    #feature_vector.append( get_sum_of_horizontal_singles(binary_image) / black )
+    # BAD
+    #feature_vector.append( get_sum_of_horizontal_singles(binary_image) / (black) )
+    #feature_vector.append( get_sum_of_horizontal_singles(binary_image) / (width*height) )
 
-    #feature_vector.append(  get_correlation_of_horizontal_variance(binary_image) )
+    # GOOD
+    #feature_vector.append( get_correlation_of_horizontal_variance(binary_image) )
 
-    #feature_vector.append(  get_mean_number_of_vertical_edges(binary_image)[0] / black )
+    # BAD
+    #feature_vector.append( get_mean_number_of_vertical_edges(binary_image) )
 
-    #feature_vector.append(  get_sum_of_vertical_edges(binary_image)/(height*width) )
-
-    #feature_vector.append(  get_mean_number_of_horizontal_edges(binary_image)[0] / black )
-
-    #feature_vector.append(  get_sum_of_horizontal_edges(binary_image)/(height*width) )
+    # NEUTRAL
+    #feature_vector.append( get_mean_number_of_horizontal_edges(binary_image) )
 
     return feature_vector

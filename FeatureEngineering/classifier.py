@@ -4,7 +4,7 @@ import pickle
 
 # Config
 weight = 'distance'
-n_neighbors = 5
+n_neighbors = 3
 
 class Classifier:
     def __init__(self):

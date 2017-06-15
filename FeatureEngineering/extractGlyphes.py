@@ -26,15 +26,17 @@ def extract_glyphs(image):
     cv2.imshow('test', img)
     cv2.waitKey(0)
     '''
-    print(p_line, ground_line, middle_line, t_line)
+    #print(p_line, ground_line, middle_line, t_line)
     # Find contours
     im2, contours, hierarchy = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
     # filter out inner contours e.g. the inner circle of a o
     filt_contours = []
+    #print( len(filt_contours) )
     for idx, contour in enumerate(contours):
         if hierarchy[0][idx][3] == -1:
             filt_contours.append(contours[idx])
 
+    #print( len(filt_contours) )
     # combine the found contours to glyph contours if possible
     contours_glyphs = combine_contours_to_glyph_contours(filt_contours, ground_line, middle_line, t_line)
 
@@ -73,6 +75,7 @@ def extract_glyphs(image):
         unified = cv2.convexHull(cont)
         center = np.array(get_center_of_contour(unified))
         rect = cv2.boundingRect(unified)
+        #print('Rect', str(rect))
 
         # Detemine size of crop of ROI
         crop_size = [rect[2]+crop_area_padding, rect[3]+crop_area_padding]
@@ -83,15 +86,25 @@ def extract_glyphs(image):
             offset = np.array([round(crop_size[0]/2), round(crop_size[1]/2)])
             crop_area_start = center - offset
             crop_area_end = crop_area_start + crop_size
+            #print('crop_size', str(crop_size) )
 
             # if the cropping are is outside of the image
             # -> shrink the cropping area till it fits
             if crop_area_start[0] < 0 or crop_area_start[1] < 0 or crop_area_end[1] >= gray.shape[0] or crop_area_end[0] >= gray.shape[1]:
+            #if crop_area_start[0] < 0 or crop_area_start[1] < 0 or  gray.shape[0] <= crop_area_end[1] or gray.shape[1] <= crop_area_end[0]:
                 crop_size = [crop_size[0]-2, crop_size[1]-2]
             else:
                 break
 
         # Create mask form the contour
+        # TODO
+        if crop_size[0] < 0 or crop_size[1] < 0:
+            #print(crop_size[0])
+            #print(crop_size[1])
+            debug_image = np.copy(originalImage)
+            cv2.rectangle(debug_image, (rect[0],rect[1]),(rect[0]+rect[2], rect[1]+rect[3]), (255,0,0))
+            cv2.imshow('Debug',debug_image)
+            cv2.waitKey(1)
         mask = np.zeros((crop_size[1], crop_size[0], 1), np.uint8)
         mask[:,:] = 0
 
@@ -128,7 +141,7 @@ def extract_glyphs(image):
     #glyph_diffs = sum(glyph_diffs) / len(glyph_diffs)
     glyph_diffs = np.median( np.array(glyph_diffs) )
 
-    print(glyph_diffs)
+    #print(glyph_diffs)
 
     return glyphs, p_line, ground_line, middle_line, t_line, glyph_diffs
 
@@ -228,6 +241,78 @@ def get_typographical_lines2(binary_image):
 
     return p_line, ground_line, middle_line, t_line
 
+def get_typographical_lines3(binary_image):
+    line_pixels = []
+    for line in binary_image:
+        line_pixels.append(sum(line))
+    height = len(line_pixels)
+
+    for i in range(0, height):
+        if line_pixels[i] > 0:
+            t_line = i
+            break
+
+    for i in range(height-1, -1, -1):
+        if line_pixels[i] > 0:
+            p_line = i
+            break
+
+    if p_line < height - 1:
+        p_line += 1
+    if t_line > 0:
+        t_line -= 1
+
+    middle = math.floor(t_line + (p_line - t_line) / 2)
+
+    print(t_line)
+    print(p_line)
+    print(middle)
+
+    upper_max = max( line_pixels[t_line:middle] )
+    upper_min = min(val for val in line_pixels[t_line:middle] if val > 0)
+    lower_max = max( line_pixels[middle:p_line] )
+    lower_min = min(val for val in line_pixels[middle:p_line] if val > 0)
+
+    lower_thres = (lower_max - lower_min) / 3
+    upper_thres = (upper_max - upper_min) / 3
+
+    diffs = []
+    for i in range(0, len(line_pixels)-1):
+        diffs.append( line_pixels[i+1] - line_pixels[i] )
+    # append 0 for last val
+    diffs.append(0)
+
+    upper_diff = max(diffs[t_line:middle])
+    lower_diff = min(diffs[middle:p_line])
+
+    middle_line = None
+    ground_line = None
+    for i in range(middle, t_line, -1):
+        if diffs[i] > upper_thres:
+            middle_line = i
+            break
+
+    for i in range(p_line, middle, -1):
+        print('a')
+        if diffs[i] < -lower_thres:
+            ground_line = i
+            break
+
+    if middle_line == None:
+        middle_line = t_line
+    if ground_line == None:
+        ground_line = p_line
+
+    print(line_pixels)
+
+    #middle_line = np.where(diffs[t_line:middle] == upper_diff)[0][0]
+    #middle_line = middle - middle_line
+
+    #ground_line = np.where(diffs[middle:p_line] == lower_diff)[0][0]
+    #ground_line = middle + ground_line
+
+    return p_line, ground_line, middle_line, t_line
+
 def combine_contours_to_glyph_contours(filt_contours, ground_line, middle_line, t_line):
     # try to compute the area threshold from the typographical lines
     contour_area_threshold = (ground_line - middle_line) / 6
@@ -243,6 +328,8 @@ def combine_contours_to_glyph_contours(filt_contours, ground_line, middle_line, 
     for contour in filt_contours:
         center = ( get_center_of_contour(contour) )
         area = cv2.contourArea(contour)
+        #x,y,w,h = cv2.boundingRect(contour)
+        #area = w * h
 
         # if ABOVE middle_line
         if center[1] < middle_line:
@@ -281,6 +368,7 @@ def combine_contours_to_glyph_contours(filt_contours, ground_line, middle_line, 
         if best_index != -1:
             contours_below[best_index].append(cont)
 
+    #print(len(contours_above))
     return contours_below
 
 
