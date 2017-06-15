@@ -12,6 +12,8 @@ from dataloader import serialize
 from dataloader import plot
 from .callback import Logger
 
+batch_size = 100
+
 class Pipe:
 	def __init__(self, data_path = "C:/Users/Alex/Downloads/images", train_size=0.6):
 		self.data_path = data_path
@@ -28,10 +30,10 @@ class Pipe:
 		self.classes = classes
 		return test_x, test_y
 
-	def run(self, model_name = "models/model_01", epochsize = 1, batchsize = 100):
+	def run(self, model_name = "models/model_01", epochsize = 1, batch_size = batch_size):
 		self.model_name = model_name
 		self.epochsize = epochsize
-		self.batchsize = batchsize
+		self.batch_size = batch_size
 		logger = Logger();
 		
 		#img_dimen = 40 * 1200 * 3
@@ -43,7 +45,7 @@ class Pipe:
 		#excute and load model as pythoncommands
 		exec(compile(open(command_file_name, "rb").read(), command_file_name, 'exec'))
 		# fit the rasult
-		result = model.fit(self.train_x, self.train_y, validation_data=(self.test_x, self.test_y), epochs=self.epochsize, batch_size=self.batchsize, callbacks=[logger])
+		result = model.fit(self.train_x, self.train_y, validation_data=(self.test_x, self.test_y), epochs=self.epochsize, batch_size=self.batch_size, callbacks=[logger])
 		#create model folder and delete existing before
 		if os.path.exists(self.model_name):
 			shutil.rmtree(self.model_name)
@@ -52,28 +54,43 @@ class Pipe:
 		plot.write_csv(result.history, path=self.model_name+"/plot.csv")
 		# save model
 		serialize.save_model(model,path=self.model_name)
-
-		loss_and_metrics = model.evaluate(self.test_x, self.test_y, batch_size=self.batchsize)
+		# save model image
+		plot_model(model, to_file=self.model_name+'/model.png', show_layer_names=True, show_shapes=True)
+		
+		loss_and_metrics = model.evaluate(self.test_x, self.test_y, batch_size=batch_size)
 		return loss_and_metrics
 	
-	def eval(self, model_name=self.model_name, test_x=self.test_x, test_y=self.test_y, batch_size=self.batchsize):
-		#load the model
-		model = serialize.load_model(path=model_name, test_x, test_y, batch_size)
-		model.compile(loss='categorical_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
+	def eval(self, model_name=None, test_x=None, test_y=None, batch_size=batch_size):
+		if model_name is None:
+			model_name=self.model_name
+		if test_x is None:
+			test_x=self.test_x
+		if test_y is None:
+			test_y=self.test_y
+		#load model
+		model = load_model(model_name)
 		#create the metrics
 		loss_and_metrics = model.evaluate(test_x, test_y, batch_size)
 		return loss_and_metrics;
 		
-	def predict(self, model_name=self.model_name, imgs, one_hot = 1):
+	def predict(self, model_name, imgs, one_hot = 1):
+		if model_name is None:
+			model_name=self.model_name
 		#load model
-		model = serialize.load_model(path=model_name)
-		model.compile(loss='categorical_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
+		model = load_model(model_name)
 		# calculate predictions
 		prediction = model.predict(imgs)
 		if one_hot:
 			prediction = serialize.get_label_from_one_hot(one_hot=prediction, label_encoder=self.label_encoder)
 		return prediction
+		
+	def get_model(self, model_name):
+		print("in load_model")
+		print("asdsdadsasdsdsd")
+		print(model_name)
+		model = serialize.load_model(path=model_name)
+		model.compile(loss='categorical_crossentropy',
+              optimizer='rmsprop',
+              metrics=['accuracy'])
+		return model
+	

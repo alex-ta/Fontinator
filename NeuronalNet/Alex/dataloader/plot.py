@@ -43,7 +43,8 @@ def plot_csv(path = default_path):
     plt.legend(loc='upper left')
     plt.show()
 	
-def plot_csv_multipath(path = default_path, skeys=["acc","val_acc","loss","val_loss","time"], group=2):
+def plot_csv_multipath(path = default_path, skeys=["acc","val_acc","loss","val_loss","time"], figure="Figure_Name", group=2):
+    plt.figure(figure)
     keys, values = read_csv(path)
     i = 0
     plt.subplot(221)
@@ -55,4 +56,4 @@ def plot_csv_multipath(path = default_path, skeys=["acc","val_acc","loss","val_l
             plt.legend(loc='upper left')
             plt.subplot(221+int(i/group))
     plt.legend(loc='upper left')
-    plt.show()
+    return plt;
