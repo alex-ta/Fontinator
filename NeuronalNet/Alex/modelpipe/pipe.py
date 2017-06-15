@@ -10,7 +10,7 @@ import numpy as np
 from dataloader import loader
 from dataloader import serialize
 from dataloader import plot
-from .Callback import Logger
+from .callback import Logger
 
 class Pipe:
 	def __init__(self, data_path = "C:/Users/Alex/Downloads/images", train_size=0.6):
@@ -56,19 +56,19 @@ class Pipe:
 		loss_and_metrics = model.evaluate(self.test_x, self.test_y, batch_size=self.batchsize)
 		return loss_and_metrics
 	
-	def eval(self):
+	def eval(self, model_name=self.model_name, test_x=self.test_x, test_y=self.test_y, batch_size=self.batchsize):
 		#load the model
-		model = serialize.load_model(path=self.model_name)
+		model = serialize.load_model(path=model_name, test_x, test_y, batch_size)
 		model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 		#create the metrics
-		loss_and_metrics = model.evaluate(self.test_x, self.test_y, batch_size=self.batchsize)
+		loss_and_metrics = model.evaluate(test_x, test_y, batch_size)
 		return loss_and_metrics;
 		
-	def predict(self, imgs, one_hot = 1):
+	def predict(self, model_name=self.model_name, imgs, one_hot = 1):
 		#load model
-		model = serialize.load_model(path=self.model_name)
+		model = serialize.load_model(path=model_name)
 		model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
