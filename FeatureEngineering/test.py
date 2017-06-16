@@ -12,21 +12,24 @@ import classifier
 from sklearn.svm import SVC
 from sklearn.feature_selection import RFE
 
-n_test_pictures = 150
+n_test_pictures = 100
 
 cla = classifier.Classifier()
 cla.loadTrainedClassifier('./classie.pickle')
 
 local_path = os.path.dirname(os.path.realpath(__file__))
-images_path = os.path.join(local_path, '..', 'images')
-#images_path = os.path.join(local_path, '..', 'TestSets','images', 'Dataset_1')
+#images_path = os.path.join(local_path, '..', 'images')
+images_path = os.path.join(local_path, '..', 'TestSets','images', 'Dataset_3')
 
 font_folders = os.listdir(images_path)
+font_folders.sort()
 image_path_font_list = []
 for folder in font_folders:
     if not folder.startswith('.'):
+        #folder = font_folders[2]
         font_images_path = os.path.join(images_path, folder)
         images = os.listdir(font_images_path)
+        images.sort()
 
         i = 0
         for image in images:

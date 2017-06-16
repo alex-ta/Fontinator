@@ -12,6 +12,7 @@ import classifier
 local_path = os.path.dirname(os.path.realpath(__file__))
 fonts_path = os.path.join(local_path, '..', 'DataGenerator', 'fonts')
 fonts = os.listdir(fonts_path)
+fonts.sort()
 
 FONT_SIZE = 24
 PADDING_TOP_BOTTOM = 8

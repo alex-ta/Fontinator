@@ -16,7 +16,7 @@ def extract_glyphs(image):
     binary = cv2.adaptiveThreshold(imgray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 9, 1)
 
     # Determine typographical ground and middle line
-    p_line, ground_line, middle_line, t_line = get_typographical_lines2(binary)
+    p_line, ground_line, middle_line, t_line = get_typographical_lines4(binary)
     ''' DEBUG Typo lines
     img = np.copy(originalImage)
     cv2.line(img, (0,ground_line), (1000, ground_line), (255,0,0))
@@ -26,6 +26,7 @@ def extract_glyphs(image):
     cv2.imshow('test', img)
     cv2.waitKey(0)
     '''
+
     #print(p_line, ground_line, middle_line, t_line)
     # Find contours
     im2, contours, hierarchy = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
@@ -310,6 +311,77 @@ def get_typographical_lines3(binary_image):
 
     #ground_line = np.where(diffs[middle:p_line] == lower_diff)[0][0]
     #ground_line = middle + ground_line
+
+    return p_line, ground_line, middle_line, t_line
+
+def get_typographical_lines4(binary_image):
+    line_pixels = []
+    for line in binary_image:
+        line_pixels.append(sum(line))
+
+    diffs = []
+    for i in range(0, len(line_pixels)-1):
+        diffs.append( line_pixels[i+1] - line_pixels[i] )
+    # append 0 for last val
+    diffs.append(0)
+
+    max_val = max(diffs)
+    # find smallest val bigger 0
+    min_val = min(i for i in diffs if i > 0)
+    threshold = (max_val - min_val) / 2 + min_val
+    threshold_old = threshold
+    # TODO
+    threshold *= 1.5
+    upper_found = False
+
+    t_line, middle_line, ground_line, p_line = None, None, None, None
+
+    for idx, val in enumerate(line_pixels):
+        diff = diffs[idx]
+
+        if t_line == None:
+            if val > 0:
+                t_line = idx
+
+        #elif not upper_found:
+            #if diff < 0:
+                #upper_found = True
+    for i in range(len(line_pixels)-1, 0, -1):
+        # TODO No idea if this works
+        if line_pixels[i] > 0:  # and diffs[i] <= max_val:
+            p_line = i + 1
+            break
+
+    middle = math.floor(t_line + (p_line - t_line) / 2)
+    for i in range(p_line-1, middle, -1):
+        # TODO No idea if this works
+        if diffs[i] <= -threshold_old: #and diffs[i] <= max_val:
+            ground_line = i
+            break
+
+
+    middle_line = np.where(line_pixels[t_line:middle] == np.max(line_pixels[t_line:middle]))[0][0]
+    middle_line = middle_line + t_line - 1
+    print(middle_line)
+
+    '''if middle_line == None:
+        if diff >= threshold_old and diff <= max_val:
+            if idx > (len(line_pixels) / 2):
+                middle_line = t_line
+            else:
+                middle_line = idx
+                '''
+
+    if middle_line == None or middle_line > middle:
+        middle_line = t_line
+    if ground_line == None:
+        ground_line = p_line
+
+
+
+
+
+
 
     return p_line, ground_line, middle_line, t_line
 
