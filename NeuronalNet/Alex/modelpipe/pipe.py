@@ -11,6 +11,7 @@ from dataloader import loader
 from dataloader import serialize
 from dataloader import plot
 from .callback import Logger
+from keras.utils import plot_model
 
 batch_size = 100
 

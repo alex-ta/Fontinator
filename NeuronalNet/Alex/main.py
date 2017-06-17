@@ -3,7 +3,7 @@ from modelpipe import pipe
 import numpy as np
 
 #create pipe
-datapipe = pipe.Pipe(data_path = "C:/Users/Alex/Documents/Fontinator/images/Dataset_1/images", train_size=0.6)
+datapipe = pipe.Pipe(data_path = "E:/Model/Fontinator/images/images", train_size=0.6)
 
 #load data
 test_x, test_y = datapipe.load_data(flatten=0, print_out=1)
