@@ -13,15 +13,11 @@ model.add(Conv2D(16, kernel_size=(3, 3),
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Conv2D(24, kernel_size=(3, 3),
 				 activation='sigmoid'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.2))
 
 model.add(Flatten())
-model.add(Dense(512, activation='relu'))
+model.add(Dense(256, activation='relu'))
 model.add(Dropout(0.4))
 model.add(Dense(len(classes), activation='softmax'))
 
-sgd = SGD(lr=0.01, clipvalue=0.5)
-model.compile(loss=keras.losses.mean_squared_error,
-			  optimizer=sgd,
-			  metrics=['accuracy'])
+model.compile(loss=keras.losses.mean_squared_error, optimizer="rmsprop", metrics=['accuracy'])
