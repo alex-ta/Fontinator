@@ -1,9 +1,0 @@
-
-# User specific PyCharm settings
-*.idea/workspace.xml
-
-# byte code for python interpreter 
-*.pyc
-
-# Don't commit image files
-*.png
