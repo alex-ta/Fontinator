@@ -4,7 +4,7 @@
 # if the data for test and validation is change the first layer format can change
 # model contains a sequential keras model that can be applied with different layers
 
-model.add(Conv2D(8, kernel_size=(4, 4),
+model.add(Conv2D(8, kernel_size=(5, 5),
 				 activation='relu',
 				 input_shape=(40,1200,3)))
 model.add(MaxPooling2D(pool_size=(2, 2)))

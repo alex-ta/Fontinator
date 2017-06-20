@@ -69,16 +69,16 @@ class Pipe:
 		if test_y is None:
 			test_y=self.test_y
 		#load model
-		model = load_model(model_name)
+		model = self.get_model(model_name)
 		#create the metrics
 		loss_and_metrics = model.evaluate(test_x, test_y, batch_size)
-		return loss_and_metrics;
+		return loss_and_metrics;	
 		
 	def predict(self, model_name, imgs, one_hot = 1):
 		if model_name is None:
 			model_name=self.model_name
 		#load model
-		model = load_model(model_name)
+		model = self.get_model(model_name)
 		# calculate predictions
 		prediction = model.predict(imgs)
 		if one_hot:
@@ -86,8 +86,6 @@ class Pipe:
 		return prediction
 		
 	def get_model(self, model_name):
-		print("in load_model")
-		print("asdsdadsasdsdsd")
 		print(model_name)
 		model = serialize.load_model(path=model_name)
 		model.compile(loss='categorical_crossentropy',
