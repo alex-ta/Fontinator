@@ -9,7 +9,7 @@ from NeuronalNet.Oli.libs.Preprocessor import *
 # Path to folder which contains subfolders which with the images
 IMG_PATH = '../../DataGenerator/images/text_it_mgmt'
 # Count of epoches when learning the NN model
-TRAIN_EPOCHS = 10
+TRAIN_EPOCHS = 50
 # The bath size (items trained per batch)
 BATCH_SIZE = 600
 # Name for model when saved
@@ -22,7 +22,7 @@ netManager: NetManager = NetManager()
 
 # Loads all images and extrakt features and labels
 preprocessor: IPreprocessor = ConvPreprocessor()
-x, y = netManager.load_features(IMG_PATH, img_preprocessor=preprocessor)
+x, y = netManager.load_features_and_preprocess(IMG_PATH, img_preprocessor=preprocessor)
 x = x.reshape(x.shape[0], x.shape[1], x.shape[2], 1)
 
 # Defining the Network structure

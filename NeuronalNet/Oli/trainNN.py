@@ -7,9 +7,9 @@ from NeuronalNet.Oli.libs.Preprocessor import *
 
 # __________Configuration__________#
 # Path to folder which contains subfolders which with the images
-IMG_PATH = 'X:\WichtigeDaten\GitProjects\\tmp\\100_Images'
+IMG_PATH = '../../DataGenerator/images/text_zfs'
 # Count of epoches when learning the NN model
-TRAIN_EPOCHS = 2
+TRAIN_EPOCHS = 1000
 # Name for model when saved
 MODEL_OUTPUT_PATH = "SavedModels/Demo"
 # The ratio of data to use for training (0.0 < x < 1.0)
@@ -20,20 +20,16 @@ netManager: NetManager = NetManager()
 
 # Loads all images and extrakt features and labels
 preprocessor: IPreprocessor = SimplePreprocessor()
-x, y = netManager.load_features(IMG_PATH, img_preprocessor=preprocessor)
+x, y = netManager.load_features_and_preprocess(IMG_PATH, img_preprocessor=preprocessor)
 
 # Defining the Network structure
 model = Sequential()
-model.add(Dense(2400, input_shape=(x.shape[1],)))
-model.add(Activation('relu'))
+model.add(Dense(2400, input_shape=(x.shape[1],), activation='relu'))
 model.add(Dropout(rate=0.2))
-model.add(Dense(120))
-model.add(Activation('relu'))
+model.add(Dense(120, activation='relu'))
 model.add(Dropout(rate=0.2))
-model.add(Dense(60))
-model.add(Activation('relu'))
-model.add(Dense(int(y.max() + 1)))
-model.add(Activation('softmax'))
+model.add(Dense(60, activation='relu'))
+model.add(Dense(int(y.max() + 1), activation='softmax'))
 
 # Train the NN model and save to disk
 netManager.train_model(model, x, y, epos=TRAIN_EPOCHS, train_ratio=TRAIN_RATIO, batch_size=0.25)
