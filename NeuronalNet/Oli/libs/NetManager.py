@@ -12,6 +12,9 @@ from NeuronalNet.Oli.libs.Preprocessor import IPreprocessor
 
 
 class NetManager:
+    '''
+    Manages the whole pipeline from data loading, preprocessing to model training and evaluation
+    '''
     def __init__(self):
         self.font_names: list = None
         self.model_path: str = None
@@ -20,7 +23,7 @@ class NetManager:
         self.label_encoder = None
         pass
 
-    def load_features(self, img_path: str, img_preprocessor: IPreprocessor) -> (ndarray, ndarray):
+    def load_features_and_preprocess(self, img_path: str, img_preprocessor: IPreprocessor) -> (ndarray, ndarray):
         self.preprocessor = img_preprocessor
 
         # Loads the images from the defined path
