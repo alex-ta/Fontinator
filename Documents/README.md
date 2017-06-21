@@ -5,9 +5,10 @@ Install [anaconda](https://www.continuum.io/downloads)
 Run commands:
 1. conda create -n IDA python=3.6
 2. activate IDA
-3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py
-4. conda install keras -c conda-forge
-5. conda install opencv -c conda-forge
+3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py graphviz
+4. pip install pydot-ng
+5. conda install keras -c conda-forge
+6. conda install opencv -c conda-forge
 if you get an error message containing tensorflow you are using the wrong backend, check out to switch the backend
 
 Tensorflow is currently not supported on 3.6
@@ -17,7 +18,7 @@ Easy way:
 3. pip install tensorflow
 * or
 * pip install tensorflow-gpu
-3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py
+3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py 
 4. conda install keras -c conda-forge
 5. conda install opencv -c conda-forge
 It also supports theano
