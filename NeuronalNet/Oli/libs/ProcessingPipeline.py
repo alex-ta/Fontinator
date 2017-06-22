@@ -11,7 +11,7 @@ from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
 from NeuronalNet.Oli.libs.Preprocessor import IPreprocessor
 
 
-class NetManager:
+class ProcessingPipeline:
     '''
     Manages the whole pipeline from data loading, preprocessing to model training and evaluation
     '''
