@@ -2,7 +2,7 @@ from keras.layers import Dense, Activation, Dropout
 from keras.models import Sequential
 from keras.utils import plot_model
 
-from NeuronalNet.Oli.libs.NetManager import NetManager
+from NeuronalNet.Oli.libs.ProcessingPipeline import ProcessingPipeline
 from NeuronalNet.Oli.libs.Preprocessor import *
 
 # __________Configuration__________#
@@ -16,11 +16,11 @@ MODEL_OUTPUT_PATH = "SavedModels/Demo"
 TRAIN_RATIO = 0.8
 
 # Pipeline managing working with keras model
-netManager: NetManager = NetManager()
+pipeline: ProcessingPipeline = ProcessingPipeline()
 
 # Loads all images and extrakt features and labels
 preprocessor: IPreprocessor = SimplePreprocessor()
-x, y = netManager.load_features_and_preprocess(IMG_PATH, img_preprocessor=preprocessor)
+x, y = pipeline.load_features_and_preprocess(IMG_PATH, img_preprocessor=preprocessor)
 
 # Defining the Network structure
 model = Sequential()
@@ -32,9 +32,9 @@ model.add(Dense(60, activation='relu'))
 model.add(Dense(int(y.max() + 1), activation='softmax'))
 
 # Train the NN model and save to disk
-netManager.train_model(model, x, y, epos=TRAIN_EPOCHS, train_ratio=TRAIN_RATIO, batch_size=0.25)
+pipeline.train_model(model, x, y, epos=TRAIN_EPOCHS, train_ratio=TRAIN_RATIO, batch_size=0.25)
 
 # Saves the model structure, weights and additional metadata about the training
-netManager.save_model(MODEL_OUTPUT_PATH)
+pipeline.save_model(MODEL_OUTPUT_PATH)
 plot_model(model, to_file=MODEL_OUTPUT_PATH + '/model_structure.svg', show_layer_names=True, show_shapes=True)
 plot_model(model, to_file=MODEL_OUTPUT_PATH + '/model_structure.png', show_layer_names=True, show_shapes=True)
