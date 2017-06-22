@@ -1,8 +1,13 @@
 # Data Generator (Autor: O.Feucht)
+Der folgendes Text bezieht sich auf das Modul unter dem Pfad "Fontinator/DataGenerator".
 Das Programm-Modul ermöglicht die Erzeugung von Trainings- und Testbildern für den Fontinator.
 Die Bilder bestehen aus einem einzeiligen Text mit unterschiedlichen Schriftstilen (Fonts).
 Der erzeugte Text wird zufällig erzeugt.
 Für eine nähere Beschreibung siehe Präsentationfolien (S. 5-8)
+
+## Abhängigkeiten
+Das Modul besitzt die folgenden externen Abhängigkeiten:
+ * PIL
 
 ## Konfiguration:
 Die Konfiguration erfolgt in der Datei 'config.py'.
@@ -16,9 +21,9 @@ Im Ordner "text_res" befinden sich einige Textdateien, welche die Wörter für d
 Zum Starten muss das Skript "createImages.py" ausgeführt werden.
 Es werden alle Fonts eingelesen und die Trainings- und Testbilder erzeugt.
 
-# Libs
-In dem ordner "libs" befinden sich alle vom  Data Generator verwendeten Hilfsklassen.
+## Hilfsklassen
+In dem Ordner "libs" befinden sich alle vom Data Generator verwendeten Hilfsklassen.
 
-## WordDict
+### WordDict
 Die Klasse "WordDict" ermöglicht die Erzeugung von Zufallssätzen.
 Die Zufallswörter können aus einer Textdatei eingelesen werden.

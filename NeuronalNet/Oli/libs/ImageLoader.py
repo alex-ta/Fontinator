@@ -1,9 +1,5 @@
 from collections import Iterable
 from pathlib import Path
-from sklearn.preprocessing import LabelEncoder
-from numpy.core.multiarray import ndarray
-
-from NeuronalNet.Oli.libs.Preprocessor import IPreprocessor
 
 
 class ImageLoader:
