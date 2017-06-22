@@ -1,4 +1,4 @@
-# Convolutional Neuronal Network font-style recongnition
+# Convolutional Neural Network font-style recongnition
 
 ### CNN
 
