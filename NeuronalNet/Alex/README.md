@@ -12,23 +12,23 @@ As input, the network expects an image, which runs through three filters in the 
 
 The project NN for fonts recognition is based on CNN. It uses image data, which is read in the same way as for other NNs. A folder structure maps different images with fonts to a label. An example structure is as follows:
 
-![image](images.png?raw=true "Folder Structure")
+![image](Images.png?raw=true "Folder Structure")
 The individual images consist of texts in the respective font. The text is generated variably via a script. The exact structure is explained in chapter [].
 
 Python was selected with Keras and Tensorflow for the font recognition application. All necessary frameworks as well as the installation instructions can be read in [].
 The structure of the software consists of several modules. All essential functionalities are to be explained using the folder structure.
 
-####Folders
+#### Folders
 - dataloader: contains all important scripts for data from folder structures for loading and dividing in test and training data. It also offers possibilities for one-hot encoding and import as a flat vector.
 - modelpipe: this folder contains the simplification of the background processes. Thus, the important functionalities: load data, train network, check network, assign data as well as simplify loading the model. Thus, several networks can be loaded and trained in a batch process.
 - model: in this folder are the defined models and their results.
 
-####Scripts:
+#### Scripts:
 - main.py: this script starts the training process by loading the training data and training several models.
 - state.py: this script generates a statistics from existing CSV data of a model. In addition, a suitable image is created for each model that shows the input and output layers.
 - evaluate.py: this script performs an evaluation of the models against the given data sets.
 
-####Pipeline
+#### Pipeline
 This Code is designed for easy use. All scripts are tightened togehter in a pipeline. The following Code shows any option provided by this pipe:
 
 ```python
