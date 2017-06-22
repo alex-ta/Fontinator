@@ -13,6 +13,7 @@ As input, the network expects an image, which runs through three filters in the 
 The project NN for fonts recognition is based on CNN. It uses image data, which is read in the same way as for other NNs. A folder structure maps different images with fonts to a label. An example structure is as follows:
 
 ![image](Images.png?raw=true "Folder Structure")
+
 The individual images consist of texts in the respective font. The text is generated variably via a script. The exact structure is explained in chapter [].
 
 Python was selected with Keras and Tensorflow for the font recognition application. All necessary frameworks as well as the installation instructions can be read in [].
