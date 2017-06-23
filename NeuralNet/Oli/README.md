@@ -1,4 +1,4 @@
-# Neural Networks for font-style recongnition (Autor O.Feucht)
+# Neural Networks for font-style recongnition
 Der folgendes Text bezieht sich auf das Modul unter dem Pfad "Fontinator/NeuralNet/Oli".
 Dieses ermöglicht die klassifizierung der Bilder mithilfe von Neuronalen Netzen.
 Dafür werden zwei Ansätze untersucht:

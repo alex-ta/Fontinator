@@ -1,5 +1,4 @@
-How to Setup:
-
+# How to Setup:
 
 Install [anaconda](https://www.continuum.io/downloads)
 Run commands:

@@ -1,4 +1,4 @@
-# Data Generator (Autor: O.Feucht)
+# Data Generator
 Der folgendes Text bezieht sich auf das Modul unter dem Pfad "Fontinator/DataGenerator".
 Das Programm-Modul ermöglicht die Erzeugung von Trainings- und Testbildern für den Fontinator.
 Die Bilder bestehen aus einem einzeiligen Text mit unterschiedlichen Schriftstilen (Fonts).
