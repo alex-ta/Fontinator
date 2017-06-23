@@ -116,7 +116,7 @@ The example creates a pipe object with the data path and the percentage of train
 from modelpipe import pipe
 datapipe = pipe.Pipe(data_path = "../../images/Dataset_1", train_size=0.6)
 datapipe.load_data(flatten=0, print_out=1)
-result = datapipe.eval(model_name = "models/model_0"+str(i), batch_size = 100)
+result = datapipe.eval(model_name = "models/model_01", batch_size = 100)
 ```
 
 Similarly, in the first example, a pipe object is created and data is loaded. The data are then evaluated via the eval function. This requires the path to the model created in the first example. The model.h5 and model.json are loaded automatically in the respective folder. The resulting object is an array containing the error value in the first place and the accuracy in percent in the second place.
