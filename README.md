@@ -4,11 +4,11 @@
 
 ### Contents:
 
-* How to Setup
-* Data Generator
-* Fontinator - Feature Engineering
-* Neural Networks for font-style recongnition
-* Convolutional Neural Network font-style recongnition
+- How to Setup
+- Data Generator
+- Fontinator - Feature Engineering
+- Neural Networks for font-style recongnition
+- Convolutional Neural Network font-style recongnition
 
 ---
 
@@ -16,28 +16,43 @@
 
 Install [anaconda](https://www.continuum.io/downloads)
 Run commands:
+
 1. conda create -n IDA python=3.6
+
 2. activate IDA
+
 3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py graphviz
+
 4. pip install pydot-ng
+
 5. conda install keras -c conda-forge
+
 6. conda install opencv -c conda-forge
+
 if you get an error message containing tensorflow you are using the wrong backend, check out to switch the backend
 
 Tensorflow is currently not supported on 3.6
 Easy way:
+
 1. conda create --name tensorflow python=3.5
+
 2. activate tensorflow
+
 3. pip install tensorflow
-* or
-* pip install tensorflow-gpu
+- or pip install tensorflow-gpu
+
 3. conda install numpy pandas pillow matplotlib scipy scikit-learn theano h5py 
+
 4. conda install keras -c conda-forge
+
 5. conda install opencv -c conda-forge
+
 It also supports theano
 
 To switch backends for keras:
+
 1. Edit the jsonfile on your home directory (.keras) folder
+
 2. The Json looks something like this:
   {
     "floatx": "float32",
@@ -45,7 +60,8 @@ To switch backends for keras:
     "backend": "theano",
     "image_data_format": "channels_last"
   }
-  change the backend to your prefered backend
+
+change the backend to your prefered backend
 You can also follow this [tutorial](http://ankivil.com/installing-keras-theano-and-dependencies-on-windows-10/).
 
 ---
@@ -59,7 +75,8 @@ Für eine nähere Beschreibung siehe Präsentationfolien (S. 5-8)
 
 ## Abhängigkeiten
 Das Modul besitzt die folgenden externen Abhängigkeiten:
- * PIL
+ 
+ - PIL
 
 ## Konfiguration:
 Die Konfiguration erfolgt in der Datei 'config.py'.
@@ -92,27 +109,33 @@ Nachfolgend werden die Abhängigkeiten sowie die Verwendung des Systems aufgezei
 
 Im Folgenden werden die externen Abhängigkeiten anhand der Entwicklungsumgebung kurz aufgezeigt:
 
-* Python 3.6
-* OpenCV 3.2
-* Numpy 1.12.1
-* PIL 4.1.1
-* scikit-learn 0.18.1
+- Python 3.6
+
+- OpenCV 3.2
+
+- Numpy 1.12.1
+
+- PIL 4.1.1
+
+- scikit-learn 0.18.1
 
 ## Verwendung
 
 Die folgenden Skripte bilden die Hauptkomponenten des Programms:
 
-* *trainer.py* - Erstellen der Trainings- und Labeldaten samt Training des Klassifikators
-* *test.py* - Test des Programms mit vorgegebenen Bilddaten
-* *Fontinator.py* - Schriftartenklassifikation eines Bildes
+- trainer.py - Erstellen der Trainings- und Labeldaten samt Training des Klassifikators
 
-### *trainer.py*
+- test.py - Test des Programms mit vorgegebenen Bilddaten
 
-Zunächst erfolgt das Training des Klassifikators. Dazu wird das Skript *trainer.py* ausgeführt. Hierzu werden alle Schriftarten, welche als *.ttf*- Dateien, in dem Ordner `Fontinator/DataGenerator/fonts` vorliegen, herangezogen. Das verwendete Glyphenset kann im Skript *trainer.py* mithilfe der Variable `TRAIN_CHARS` modifiziert werden. Die ezeugten Parameter des Klassifiaktors werden in der Datei `classie.pickle` gepseichert. Die Datei `labels.pickle` enthält die zugehörigen Labels und erlaubt somit die spätere Zuordnung eines Klassifikationsergebnisses zu dem entsprechenden Namen der Schriftart.
+- Fontinator.py - Schriftartenklassifikation eines Bildes
 
-### *test.py*
+### trainer.py
 
-Nach dem Training kann das System mithilfe des Skriptes *test.py* überprüft werden. Hierbei werden in der aktuellen Konfiguration die Bilder des Ordners `Fontinator/TestSets/images/Dataset_1` verwendet. Der Pfad zum Datenset kann in dem Skript *test.py* mithilfe der Variable `images_path` angepasst werden. Dabei muss die im folgenden Dargestellte Ordnerstruktur eingehalten werden.
+Zunächst erfolgt das Training des Klassifikators. Dazu wird das Skript trainer.py ausgeführt. Hierzu werden alle Schriftarten, welche als .ttf - Dateien, in dem Ordner `Fontinator/DataGenerator/fonts` vorliegen, herangezogen. Das verwendete Glyphenset kann im Skript trainer.py mithilfe der Variable `TRAIN_CHARS` modifiziert werden. Die ezeugten Parameter des Klassifiaktors werden in der Datei `classie.pickle` gepseichert. Die Datei `labels.pickle` enthält die zugehörigen Labels und erlaubt somit die spätere Zuordnung eines Klassifikationsergebnisses zu dem entsprechenden Namen der Schriftart.
+
+### test.py
+
+Nach dem Training kann das System mithilfe des Skriptes test.py überprüft werden. Hierbei werden in der aktuellen Konfiguration die Bilder des Ordners `Fontinator/TestSets/images/Dataset_1` verwendet. Der Pfad zum Datenset kann in dem Skript test.py mithilfe der Variable `images_path` angepasst werden. Dabei muss die im folgenden Dargestellte Ordnerstruktur eingehalten werden.
 
 ```
 images_path
@@ -131,9 +154,9 @@ Wichtig ist dabei, dass die Ordner, welche die Bilder enthalten entsprechend der
 
 Dabei wird für jedes Bild die Schriftart, welche erkannt wurde, ausgegeben. Zusätzlich wird jede erkannte Glyphe des Bildes individuell einer Schriftart zugeordnet. Wurden alle Bilder untersucht, so wird die Genauigkeit der Ergebnisse für die einzelnen Glyphen selbst, sowie für das Gesamtergebniss der Bilder ausgegeben.
 
-### *Fontinator.py*
+### Fontinator.py
 
-Ist das Training abgeschlossen kann das Skript *Fontinator.py* für die Klassifikation der Schriftart eines Bildes verwendet werden. Dazu wird das Skript mit Python aufgerufen und der Pfad zum Bild übergeben.
+Ist das Training abgeschlossen kann das Skript -Fontinator.py- für die Klassifikation der Schriftart eines Bildes verwendet werden. Dazu wird das Skript mit Python aufgerufen und der Pfad zum Bild übergeben.
 
 `python Fontinator.py /Pfad/zum/Bild`
 
@@ -143,9 +166,11 @@ Das Skript liefert eine absteigende Liste mit den Wahrscheinlichkeiten der erkan
 
 Das Verarbeitungskonzept kann in mehrere Schritte unterteilt werden, welche für jede Verarbeitung eines Bildes durchgeführt werden:
 
-* Extraktion einzelner Glyphen aus dem Text
-* Extraktion von Features aus den einzelnen Glyphen
-* Klassifikation anhand der extrahierten Features
+- Extraktion einzelner Glyphen aus dem Text
+
+- Extraktion von Features aus den einzelnen Glyphen
+
+- Klassifikation anhand der extrahierten Features
 
 Da die Bilddaten erzeugt werden und damit einen idealen Datensatz darstellen, können auf größere Vorverarbeitungsschritte zur Bildverbesserung verzichtet werden.
 
@@ -153,11 +178,12 @@ Zusätzlich ist das Training des Klassifikators ein weiterer Schritt, welcher ei
 
 ### Glyphenextraktion
 
-Zunächst wird der im Bild vorhandene Text in einzelne Glyphen zerlegt. Eine Glyphe stellt dabei einen Buchstaben, eine Ziffer, ein Satzzeichen oder ähnliche Textartefakte dar. Hierzu werden zunächst die typografischen Eigenschaften nach dem Vierliniensystem berechnet. Die Linien beschreiben die Ober- und Unterkante von Kleinbuchstaben ohne Oberlänge (z.B. m, o, a). Eine  weitere Linie beschreibt die Oberkante von Großbuchstaben, sowie von Kleinbuchstaben mit Oberlänge (l, ö, i). Die vierte Linen beschreibt die Unterkannte von Buchstaben mit Unterlänge (z.B. g, p, q). [[Wikipedia Liniensystem](https://de.wikipedia.org/wiki/Liniensystem_(Typografie)] 
+Zunächst wird der im Bild vorhandene Text in einzelne Glyphen zerlegt. Eine Glyphe stellt dabei einen Buchstaben, eine Ziffer, ein Satzzeichen oder ähnliche Textartefakte dar. Hierzu werden zunächst die typografischen Eigenschaften nach dem Vierliniensystem berechnet. Die Linien beschreiben die Ober- und Unterkante von Kleinbuchstaben ohne Oberlänge (z.B. m, o, a). Eine  weitere Linie beschreibt die Oberkante von Großbuchstaben, sowie von Kleinbuchstaben mit Oberlänge (l, ö, i). Die vierte Linen beschreibt die Unterkannte von Buchstaben mit Unterlänge (z.B. g, p, q). 
+- [Wikipedia Liniensystem](https://de.wikipedia.org/wiki/Liniensystem_(Typografie)) 
 
 ![Liniensystem](https://upload.wikimedia.org/wikipedia/commons/3/39/Typography_Line_Terms.svg)
 
-*Bildquelle: [Wikipedia](https://en.wikipedia.org/wiki/Baseline_(typography)*
+-Bildquelle: [Wikipedia](https://en.wikipedia.org/wiki/Baseline_(typography)-
 
 Anschließend werden die gefundenen Linien für die eigentliche Glyphenextraktion verwendet. Hierbei werden zunächst zusammenhängende Artefakte mithilfe der OpenCv Methode [findContours](http://docs.opencv.org/3.2.0/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a) identifiziert. Die gefundenen Artefakte stellen dabei entweder eine gesamte Glyphe oder einen Teil einer Glyphe dar. Die gefundenen typografischen Linien helfen dabei, einzelne Artefakte wie z.B. i-Punkte dem zugehörigen Artefakt zuzuordnen und somit die Glyphe zu vervollständigen. Die vervollständigten Glyphen werden anschließend an den nächsten Verarbeitungsschritt, die Featureextraktion, weitergereicht.
 
@@ -165,16 +191,25 @@ Anschließend werden die gefundenen Linien für die eigentliche Glyphenextraktio
 
 Bei der Featureextraktion werden markante Merkmale (Features) aus den einzelnen Glyphen ermittelt. Entscheidend ist es hierbei Features zu wählen, welche die individuellen Charakteristiken der Schriftarten beschreiben und somit eine Differenziation zwischen diesen erlauben. Als Startpunkt wurden hierbei einige Features nach [Andrew Bray](https://github.com/andrewpbray/lab-7/blob/master/lab-7.Rmd) implementiert und durch weitere eigens definierte Features ergänzt. Hierbei werden die im folgenden vorgestellten Features verwendet:
 
-* Anzahl dunkler Pixel
-* Länge des Umfangs aller Komponenten einer Glyphe
-* Anzahl der Pixel der skelletierten Glyphe
-* Mittlere horizontale Position alle dunklen Pixel
-* Mittlere vertikale Position aller dunklen Pixel
-* Anzahl der horizontalen Kanten im Bild
-* Anzahl zusammenhängender Komponenten
-* Anzahl von Löcher (z.B. innerer Kreis im Buchstaben O)
-* Horizontale Varianz der Position aller dunklen Pixel
-* Vertikale Varianz der Position aller dunklen Pixel
+- Anzahl dunkler Pixel
+
+- Länge des Umfangs aller Komponenten einer Glyphe
+
+- Anzahl der Pixel der skelletierten Glyphe
+
+- Mittlere horizontale Position alle dunklen Pixel
+
+- Mittlere vertikale Position aller dunklen Pixel
+
+- Anzahl der horizontalen Kanten im Bild
+
+- Anzahl zusammenhängender Komponenten
+
+- Anzahl von Löcher (z.B. innerer Kreis im Buchstaben O)
+
+- Horizontale Varianz der Position aller dunklen Pixel
+
+- Vertikale Varianz der Position aller dunklen Pixel
 
 Die ermittelten Features werden anschließend mithilfe von Merkmalen, welche die Größe der Glyphen beschreiben, normiert und sind somit weitestgehend unabhängig von der Schriftgröße. Diese Features bilden anschließend den Featurevektor, welcher für die Klassifikation verwendet wird.
 
@@ -202,33 +237,52 @@ Abschließend kann das Programm auf seine Funktionsweise getestet werden. Dieses
 Der folgendes Text bezieht sich auf das Modul unter dem Pfad "Fontinator/NeuralNet/Oli".
 Dieses ermöglicht die klassifizierung der Bilder mithilfe von Neuronalen Netzen.
 Dafür werden zwei Ansätze untersucht:
- * Fully Connected Neural Networks (Siehe Präsentationsfolien S. 21-24)
- * Convolutional Neural Networks
+
+ - Fully Connected Neural Networks (Siehe Präsentationsfolien S. 21-24)
+
+ - Convolutional Neural Networks
 
 ## Abhängigkeiten
 Das Modul besitzt die folgenden externen Abhängigkeiten:
- * numpy
- * pandas
- * pillow
- * matplotlib
- * scipy
- * scikit-learn
- * theano
- * keras
- * h5py
- * graphviz
- * pydot-ng
- * keras
- * opencv
+
+ - numpy
+
+ - pandas
+
+ - pillow
+
+ - matplotlib
+
+ - scipy
+
+ - scikit-learn
+
+ - theano
+
+ - keras
+
+ - h5py
+
+ - graphviz
+
+ - pydot-ng
+
+ - keras
+
+ - opencv
  
- In der Datei "Fontinator/Documents/HOW_TO_SETUP.md" wird die Installation der benötigten Python Umgebung erklärt\
- Hierfür wird [Anaconda](https://www.continuum.io/downloads) verwendet.
+ 
+In der Datei "Fontinator/Documents/HOW_TO_SETUP.md" wird die Installation der benötigten Python Umgebung erklärt.
+
+Hierfür wird [Anaconda](https://www.continuum.io/downloads) verwendet.
 
 ## Ausführbare Skripte
 Dieser Abschnitt beschreibt alle ausführbaren Skripte im Modul.\
-Alle ausfürbaren Skripte enthalten am Anfang einen kurzen Bereich zur Konfiguration.\
-Alle Skripte informieren den Benutzer in der Console über die aktuellen Arbeitsschritte.\
-Die Skripte können direkt in der Konsole aufgerufen werden => "python \<skriptname>".\
+Alle ausfürbaren Skripte enthalten am Anfang einen kurzen Bereich zur Konfiguration.
+
+Alle Skripte informieren den Benutzer in der Console über die aktuellen Arbeitsschritte.
+
+Die Skripte können direkt in der Konsole aufgerufen werden => "python <skriptname>".
 
 ### trainNN
 Das Skript "trainNN.py" startet das Trainieren eines Fully Connected Neural Networks.
@@ -252,12 +306,16 @@ Die Keras-Modelle sollten in dem Ordner "Fontinator/NeuralNet/SavedModels" abges
 
 ### Aufbau
 Für jedes Model gibt es einen eigenen Unterordner (z.B. LT2, CNN_RAND_80).
-Für jedes Model wurden die Struktur und die Gewichtungen des Netzes abgespeichert.\
+Für jedes Model wurden die Struktur und die Gewichtungen des Netzes abgespeichert.
 Zusätzlich sind noch weitere Metadaten verfügbar:
- * Ein Diagram, das anzeigt wie sich die Accuracy beim Trainieren verhalten hat.
- * SVG- und PNG-Grafiken, die den Aufbau des Models zeigen.
- * JSON-Datei, die das Label Mapping gespeichert hat
- * CSV-Datei, die jegliche Informationen über das Training des Models enthält (epoch,val_loss,val_acc,loss,acc,tdiff)
+
+ - Ein Diagram, das anzeigt wie sich die Accuracy beim Trainieren verhalten hat.
+
+ - SVG- und PNG-Grafiken, die den Aufbau des Models zeigen.
+
+ - JSON-Datei, die das Label Mapping gespeichert hat
+
+ - CSV-Datei, die jegliche Informationen über das Training des Models enthält (epoch,val_loss,val_acc,loss,acc,tdiff)
 
 ## Hilfsklassen
 Im Ordner "libs" befinden sich alle von diesem Modul verwendeten Hilfsklassen.
@@ -278,21 +336,31 @@ Außerdem können auch direkt einige aussagekräftige Diagramme erzeugt werden.
 Die Klasse managt den kompletten Lifecycle eines Keras-Models.
 
 Dazu gehören:
- * Laden der Bilder und Labels
- * Preprocessing
- * Laden eines Models aus einer Datei
- * Trainieren eines Models
- * Abspeichern von Struktur und der Gewichtungen eines Models
- * Prediction
- * Evaluierung von Bildern
+
+ - Laden der Bilder und Labels
+
+ - Preprocessing
+
+ - Laden eines Models aus einer Datei
+
+ - Trainieren eines Models
+
+ - Abspeichern von Struktur und der Gewichtungen eines Models
+
+ - Prediction
+
+ - Evaluierung von Bildern
  
 ### Preprocessor
 Enthält mehrere Preprocessor-Klassen, welche die Vorverarbeitung der Bilder für das Neuronale Netz übernehmen.
 
-Der "SimplePreprocessor" übernimmt die Vorverarbeitung eines Bildes für ein Fully Connected NN.\
+Der "SimplePreprocessor" übernimmt die Vorverarbeitung eines Bildes für ein Fully Connected NN.
+
 Dazu gehören die Schritte:
- * Binarisierung
- * Flattening
+
+ - Binarisierung
+
+ - Flattening
  
 Der "ConvPreprocessor" übernimmt die Vorverarbeitung eines Bildes für ein Convolutional NN.
 Dabei wird das Bild nur binarisiert.
@@ -313,12 +381,16 @@ As input, the network expects an image, which runs through three filters in the 
 
 The project NN for fonts recognition is based on CNN. It uses image data, which is read in the same way as for other NNs. A folder structure maps different images with fonts to a label. An example structure is as follows:
 
-![image](./NeuralNet/Alex/Images.png?raw=true "Folder Structure")
+![image](https://raw.githubusercontent.com/alex-ta/Fontinator/master/NeuralNet/Alex/Images.png "Folder Structure")
 
 The individual images consist of texts in the respective font. The text is generated variably via a script. The exact structure is explained in chapter [Data Generator].
 
 Python was selected with Keras and Tensorflow for the font recognition application. All necessary frameworks as well as the installation instructions can be read in [How to Setup].
 The structure of the software consists of several modules. All essential functionalities are to be explained using the folder structure.
+
+### Structure
+
+![image](https://raw.githubusercontent.com/alex-ta/Fontinator/master/NeuralNet/Alex/Structure.png "Project Structure")
 
 #### Folders
 - dataloader: contains all important scripts for data from folder structures for loading and dividing in test and training data. It also offers possibilities for one-hot encoding and import as a flat vector.
@@ -394,6 +466,7 @@ plot.plot_csv("models/model_01/plot.csv")
 #### Minimal Code Samples
 
 1) Training
+
 ```
 from modelpipe import pipe
 datapipe = pipe.Pipe(data_path = "../../images/Dataset_1", train_size=0.6)
@@ -401,9 +474,10 @@ datapipe.load_data(flatten=0, print_out=1)
 result = datapipe.run(model_name = "models/model_01", epochsize = 300, batch_size = 100)
 ```
 
-The example creates a pipe object with the data path and the percentage of training data. The data is then loaded as a multi-dimensional array using the load_data command. Then the model "model / model_01.py" is trained with 300 epochs and a batch size of 300. The trained model is stored in the "model / model_01 /" folder with meta information.
+The example creates a pipe object with the data path and the percentage of training data. The data is then loaded as a multi-dimensional array using the load_data command. Then the model "model / model_01.py" is trained with 300 epochs and a batch size of 100. The trained model is stored in the "model / model_01 /" folder with meta information.
 
 2) Evaluation
+
 ```
 from modelpipe import pipe
 datapipe = pipe.Pipe(data_path = "../../images/Dataset_1", train_size=0.6)
@@ -414,6 +488,7 @@ result = datapipe.eval(model_name = "models/model_01", batch_size = 100)
 Similarly, in the first example, a pipe object is created and data is loaded. The data are then evaluated via the eval function. This requires the path to the model created in the first example. The model.h5 and model.json are loaded automatically in the respective folder. The resulting object is an array containing the error value in the first place and the accuracy in percent in the second place.
 
 3) Creating images to analyze the model
+
 ```
 from dataloader import plot
 plot.plot_csv_multipath("models/model_01/plot.csv", figure="Model_1").savefig("model1.png")
@@ -429,6 +504,7 @@ plot_model(model, to_file='model.png', show_layer_names=True, show_shapes=True)
 The second code snippet shows the creation of a model overview, the layers of the model are plotted. Additional software is required.
 
 4) Predictions
+
 ```
 from modelpipe import pipe
 imgArray = "Your Images go here"
@@ -437,6 +513,7 @@ predictions = pipe.Pipe().predict(model_name="models/model_01", imgs=imgArray)
 This example shows how multiple images are assigned using the predict method. To do this, the path to the model created in the first example must be specified. The images are given as imgArray. In the example, no images were loaded.
 
 5) Creating a model
+
 ```
 model.add(Conv2D(8, kernel_size=(3, 3), activation='relu', input_shape=(40,1200,3)))
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -450,7 +527,3 @@ model.add(Dense(len(classes), activation='softmax'))
 model.compile(loss=keras.losses.mean_squared_error, optimizer="rmsprop", metrics=['accuracy'])
 ```
 In this last example, a model is displayed in "models / model_01.py". The model automatically has a model object, a class object, as well as various keras importe. The script is loaded at runtime by the run method and can use the objects and references instanced before. Thus, an optimal separation of dependencies is possible which makes it easy to exchange models.
-
-### Structure
-
-![image](./NeuralNet/Alex/Structure.png?raw=true "Project Structure")
