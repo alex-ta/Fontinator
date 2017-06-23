@@ -5,10 +5,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 
-from NeuronalNet.Oli.libs.TrainingLogger import TrainingLogger
-from NeuronalNet.Oli.libs.ImageLoader import ImageLoader
-from NeuronalNet.Oli.libs.ModelSerializer import ModelSerializer
-from NeuronalNet.Oli.libs.Preprocessor import IPreprocessor
+from NeuralNet.Oli.libs.TrainingLogger import TrainingLogger
+from NeuralNet.Oli.libs.ImageLoader import ImageLoader
+from NeuralNet.Oli.libs.ModelSerializer import ModelSerializer
+from NeuralNet.Oli.libs.Preprocessor import IPreprocessor
 
 
 class ProcessingPipeline:

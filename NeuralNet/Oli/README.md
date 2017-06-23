@@ -1,9 +1,9 @@
 # Neural Networks for font-style recongnition (Autor O.Feucht)
-Der folgendes Text bezieht sich auf das Modul unter dem Pfad "Fontinator/NeuronalNet/Oli".
+Der folgendes Text bezieht sich auf das Modul unter dem Pfad "Fontinator/NeuralNet/Oli".
 Dieses ermöglicht die klassifizierung der Bilder mithilfe von Neuronalen Netzen.
 Dafür werden zwei Ansätze untersucht:
- * Fully Connected Neuronal Networks
- * Convolutional Neuronal Networks
+ * Fully Connected Neural Networks (Siehe Präsentationsfolien S. 21-24)
+ * Convolutional Neural Networks
 
 ## Abhängigkeiten
 Das Modul besitzt die folgenden externen Abhängigkeiten:
@@ -31,13 +31,13 @@ Alle Skripte informieren den Benutzer in der Console über die aktuellen Arbeits
 Die Skripte können direkt in der Konsole aufgerufen werden => "python \<skriptname>".\
 
 ### trainNN
-Das Skript "trainNN.py" startet das Trainieren eines Fully Connected Neuronal Networks.
+Das Skript "trainNN.py" startet das Trainieren eines Fully Connected Neural Networks.
 
 ### evaluateNN
 Das Skript "evaluateNN.py" erlaubt die Evaluation eines mit "trainNN.py" erzeugten Models.
 
 ### trainCNN
-Das Skript "trainCNN.py" startet das Trainieren eines Convolutional Neuronal Networks.
+Das Skript "trainCNN.py" startet das Trainieren eines Convolutional Neural Networks.
 
 ### evaluateNN
 Das Skript "evaluateCNN.py" erlaubt die Evaluation eines mit "trainCNN.py" erzeugten Models.
@@ -45,7 +45,7 @@ Das Skript "evaluateCNN.py" erlaubt die Evaluation eines mit "trainCNN.py" erzeu
 ## Abgespeicherte Modelle
 Im Ordner "SavedModels" sind die besten Keras-Modelle abgespeichert.
 Für jedes Model gibt es einen eigenen Unterordner (z.B. LT2, CNN_RAND_80).
-Für jedes Modell wurden die Struktur und die Gewichtungen des Netzes abgespeichert.\
+Für jedes Model wurden die Struktur und die Gewichtungen des Netzes abgespeichert.\
 Zusätzlich sind noch weitere Metadaten verfügbar:
  * Ein Diagram, das anzeigt wie sich die Accuracy beim Trainieren verhalten hat.
  * SVG- und PNG-Grafiken, die den Aufbau des Models zeigen.
@@ -63,7 +63,7 @@ Die Klasse unterstützt beim Laden aller Bilddaten.
 
 ### TrainingLogger
 Die Klasse protokolliert alle wichtigen Informationen, die beim Training eines Keras-Models anfallen.
-Die protokollierten Informatioen werden in einem Pandas Dataframe gespeichert.
+Die protokollierten Informatioen werden in einem Pandas-Dataframe gespeichert.
 Dieses kann auch in einer CSV-Datei abgespeichert werden.
 Außerdem können auch direkt einige aussagekräftige Diagramme erzeugt werden.
 

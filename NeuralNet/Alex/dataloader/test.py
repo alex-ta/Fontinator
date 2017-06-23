@@ -5,7 +5,7 @@ import cv2 as cv
 import numpy as np
 
 #data
-data = "C:/Users/Alex/Documents/Fontinator/NeuronalNet/Alex/dataloader/test_img"
+data = "C:/Users/Alex/Documents/Fontinator/NeuralNet/Alex/dataloader/test_img"
 
 # load dataset
 dataset = loader.read_to_dataset(data, 1);

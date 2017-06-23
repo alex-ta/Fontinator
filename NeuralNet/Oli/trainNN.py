@@ -2,8 +2,8 @@ from keras.layers import Dense, Activation, Dropout
 from keras.models import Sequential
 from keras.utils import plot_model
 
-from NeuronalNet.Oli.libs.ProcessingPipeline import ProcessingPipeline
-from NeuronalNet.Oli.libs.Preprocessor import *
+from NeuralNet.Oli.libs.ProcessingPipeline import ProcessingPipeline
+from NeuralNet.Oli.libs.Preprocessor import *
 
 # __________Configuration__________#
 # Path to folder which contains subfolders which with the images
