@@ -43,7 +43,14 @@ Das Skript "trainCNN.py" startet das Trainieren eines Convolutional Neural Netwo
 Das Skript "evaluateCNN.py" erlaubt die Evaluation eines mit "trainCNN.py" erzeugten Models.
 
 ## Abgespeicherte Modelle
-Im Ordner "SavedModels" sind die besten Keras-Modelle abgespeichert.
+
+### Download
+Da die vortrainierten Keras-Modelle eine Größe von 200-500mb besitzen, sind diese nicht im Repository enthalten.
+Die vortrainierten Modelle können unter folgendem
+[Link](https://www.oliver-feucht.de/nextcloud/s/OrPDp7G2uxLo5av) gefunden werden.
+Die Keras-Modelle sollten in dem Ordner "Fontinator/NeuralNet/SavedModels" abgespeichert werden.
+
+### Aufbau
 Für jedes Model gibt es einen eigenen Unterordner (z.B. LT2, CNN_RAND_80).
 Für jedes Model wurden die Struktur und die Gewichtungen des Netzes abgespeichert.\
 Zusätzlich sind noch weitere Metadaten verfügbar:
