@@ -10,7 +10,7 @@ import numpy as np
 from dataloader import loader
 from dataloader import serialize
 from dataloader import plot
-from .callback import Logger
+from .Callback import Logger
 from keras.utils import plot_model
 
 batch_size = 100
@@ -56,7 +56,7 @@ class Pipe:
 		# save model
 		serialize.save_model(model,path=self.model_name)
 		# save model image
-		plot_model(model, to_file=self.model_name+'/model.png', show_layer_names=True, show_shapes=True)
+		#plot_model(model, to_file=self.model_name+'/model.png', show_layer_names=True, show_shapes=True)
 		
 		loss_and_metrics = model.evaluate(self.test_x, self.test_y, batch_size=batch_size)
 		return loss_and_metrics
