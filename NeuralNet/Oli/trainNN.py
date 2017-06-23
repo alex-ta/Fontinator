@@ -6,7 +6,7 @@ from NeuralNet.Oli.libs.ProcessingPipeline import ProcessingPipeline
 from NeuralNet.Oli.libs.Preprocessor import *
 
 # __________Configuration__________#
-# Path to folder which contains subfolders which with the images
+# Path to folder which contains subfolders with the images
 IMG_PATH = '../../DataGenerator/images/text_zfs'
 # Count of epoches when learning the NN model
 TRAIN_EPOCHS = 1000
