@@ -2,8 +2,8 @@ from NeuralNet.Oli.libs.ProcessingPipeline import ProcessingPipeline
 from NeuralNet.Oli.libs.Preprocessor import SimplePreprocessor, IPreprocessor
 
 #__________Configuration__________#
-# Path to folder which contains subfolders which with the images
-IMG_PATH = '../../images/Dataset_3'
+# Path to folder which contains subfolders with the images
+IMG_PATH = '../../images/Dataset_2'
 # Name for model when saved
 MODEL_LOAD_PATH = "SavedModels/LT2"
 
